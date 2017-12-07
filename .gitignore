@@ -1,0 +1,8 @@
+
+.idea
+
+node_modules
+.npmrc
+test/coverage
+npm-debug.log
+.vscode

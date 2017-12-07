@@ -1,0 +1,295 @@
+$title-color: #004b68;
+$background-color: #E2E7EA;
+$border-color: #bdc5c6;
+$main-color: #01afd1;
+$font-family-regular: 'Segoe UI';
+$font-family-semibold: 'Segoe UI Semibold';
+$res-folder: 'icons';
+
+
+.vfb-filters {
+  font-family: $font-family-semibold;
+  background-color: $background-color;
+  box-shadow: 2px 0px 1.98px 0.02px rgba(0, 0, 0, 0.09);
+  height: 100%;
+  .filter-group {
+    width: 100%;
+    height: calc(100% - 30px);
+    overflow-y: scroll;
+  }
+  .filter-group::-webkit-scrollbar-thumb {
+    width: 6px;
+    background-color: #E2E7EA;
+  }
+  .filter-group:hover {
+    overflow-y: scroll;
+  }
+  .filter-group:hover::-webkit-scrollbar-thumb {
+    width: 6px;
+    background-color: #BEC3C6;
+  }
+}
+
+.vfb-header {
+  @extend .clearfix;
+  background-color: $main-color;
+  height: 30px;
+  line-height: 30px;
+  font-size: 20px;
+  color: #ffffff;
+  padding-left: 8px;
+
+  .clear-all{
+    font-size: 14px;
+    margin-right: 8px;
+    float:right;
+    cursor: pointer;
+  }
+}
+
+.filter {
+  margin-left: 9px;
+  margin-right: 9px;
+  border-bottom: 1px solid $border-color;
+  .direction{
+    float: right;
+    margin-top: 23px;
+    margin-right: 3px;
+  }
+  &.expand{
+    .direction{
+      background: url($res-folder + '/expand-filter.svg') no-repeat;
+      display: inline-block;
+    }
+  }
+  &.collapse{
+    display: inherit; // added incase bootstrap component is installed (bootstrap collapse class has display: none)
+    .direction{
+      background: url($res-folder  +'/collapse-filter.svg') no-repeat;
+      display: inline-block;
+    }
+  }
+  &:last-child{
+    margin-bottom: 80px;
+  }
+  &.bookmarkColumn{
+    margin-top: 20px;
+  }
+  &.disabled{
+    opacity: .5;
+    pointer-events: none;
+  }
+}
+
+.filter-header {
+  height:50px;
+  line-height:50px;
+  cursor: pointer;
+  @extend .clearfix;
+
+  .title {
+    font-family: $font-family-regular;
+    font-size: 18px;
+    color: $title-color;
+    display: inline-block;
+    width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .iconClickArea{
+      width: 36px;
+      height: 36px;
+      display: inline-block;
+      vertical-align: middle;
+
+      .icon{
+        background: url($res-folder + '/filter-small.svg') no-repeat;
+        width: 12px;
+        height: 11px;
+        margin-top: 10px;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .direction{
+    width: 16px;
+    height: 9px;
+  }
+}
+
+.filter-group::-webkit-scrollbar {
+  width: 5px;
+}
+
+.filter-group::-webkit-scrollbar-thumb {
+  width: 5px;
+  border-radius: 10px;
+  background-color: $border-color;
+}
+
+.filter-control {
+  margin-bottom: 20px;
+
+  .label{
+    font-family: $font-family-semibold;
+    font-size: 13px;
+    color: #404f5a;
+    margin-bottom: 2px;
+  }
+}
+
+.dropdown-filter-control {
+  @extend .filter-control;
+
+  .dropdown-select {
+    width: 100%;
+    font-family: $font-family-semibold;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  .Select--multi .Select-value-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 270px;
+  }
+
+  .Select-arrow-zone{
+    vertical-align: top;
+    padding-top: 6px;
+  }
+
+  .Select-clear-zone{
+    vertical-align: bottom;
+    padding-bottom: 8px;
+  }
+}
+
+.checkbox-filter-control {
+  //@extend .filter-control;
+
+  &.statusCheckBox{
+    -webkit-column-count: 2;  /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+
+    .checkbox {
+      margin-bottom: 8px;
+    }
+  }
+
+  .checkbox {
+
+    label {
+      font-size: 14px;
+      font-family: $font-family-regular;
+    }
+
+    input {
+
+      position: relative;
+      top: -1px;
+
+      /* Border */
+      border: 1px solid $border-color;
+      border-radius: 3pt;
+
+      /* Visual */
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background:white;
+      height: 16px;
+      width: 16px;
+      outline: 0;
+      vertical-align: middle;
+      margin-right: 5px;
+      &:checked {
+        background: $main-color url($res-folder + '/selected-checkbox.svg') no-repeat center;
+        border: 1px solid $main-color;
+      }
+    }
+
+    &.select-all{
+      label{
+        font-family: $font-family-semibold;
+        color: $title-color;
+      }
+    }
+  }
+}
+
+.filter-input{
+  width: calc(100% - 22px);
+  border: 1px solid $border-color;
+  height: 30px;
+  padding-left: 10px;
+  font-family: $font-family-regular;
+  &:focus {
+    border: 1px solid $main-color;
+    outline: none;
+  }
+
+  &::-webkit-input-placeholder {
+    font-size: 13px;
+    font-family: $font-family-regular;
+    color: #b7bfc3;
+    text-align: left;
+    padding-left: 6px;
+    padding-top: 9px;
+    padding-bottom: 7px;
+  }
+}
+
+.date-picker-filter-control{
+  @extend .filter-control;
+  .react-datepicker__input-container{
+    width:100%;
+  }
+  input{
+    @extend .filter-input;
+  }
+}
+
+.date-dropdown {
+  .Select-clear-zone {
+    visibility: hidden;
+  }
+}
+
+/*utils*/
+
+.clearfix:after {
+  content: " ";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+/*DATE PICKER*/
+
+.react-datepicker .react-datepicker__day--selected {
+  background-color: $main-color;
+}
+.react-datepicker .react-datepicker__day--selected:hover {
+  background-color: $main-color;
+  cursor: default;
+}
+
+.react-datepicker__day--today {
+  color: #12798e;
+}
+
+.date-picker-filter-control input[value=""] {
+  background: #fff url($res-folder+'/calendar-icon.svg') no-repeat 97% center;
+  background-size: 13px 14px;
+}
+
+.date-picker-filter-control input:not([value=""]) {
+  background: #fff url($res-folder+'/calendar-icon-hover.svg') no-repeat 97% center;
+  background-size: 13px 14px;
+}
