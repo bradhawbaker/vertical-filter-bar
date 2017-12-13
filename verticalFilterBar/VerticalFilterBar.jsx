@@ -1,19 +1,7 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React from 'react';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
+
 import i18n from '../utils/i18n/i18n.js';
 import FilterGroup from './FilterGroup.jsx';
 import {
@@ -23,7 +11,18 @@ import {
 
 class VerticalFilterBar extends React.Component{
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterValues: {}
+    };
+  }
+
   onFilterChange(filtersValues){
+    this.setState(() => {
+      return {filterValues: filtersValues};
+    });
+
     if(this.props.onFilterChange){
       this.props.onFilterChange(filtersValues);
     }
@@ -34,8 +33,34 @@ class VerticalFilterBar extends React.Component{
   }
 
   onClearAll(){
-    let filterValues = {};
-    this.onFilterChange(filterValues);
+    let clearedFilterValues = {};
+
+    for (let filterValue in this.state.filterValues) {
+      let emptyFilterValue = {};
+      let filterControlId = Object.keys(this.props.filtersConfig[filterValue]['controls'])[0];
+      let controller = {};
+      controller.values = emptyFilterValue;
+      let controllers = {};
+      controllers[filterControlId] = controller;
+      let controls = {};
+      controls.controls = controllers;
+      clearedFilterValues[filterValue] = controls;
+    }
+    this.setState(() => {
+      return {filterValues: clearedFilterValues};
+    });
+  }
+
+  componentWillMount() {
+    if (!isEmpty(this.props.filterValues)) {
+      this.setState({filterValues: this.props.filterValues});
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.filterValues, this.props.filterValues)) {
+      this.setState({filterValues: nextProps.filterValues});
+    }
   }
 
   render(){
@@ -49,7 +74,7 @@ class VerticalFilterBar extends React.Component{
           data={this.props.data}
           filtersOrder={this.props.filtersOrder}
           filtersConfig={this.props.filtersConfig}
-          filtersValues={this.props.filterValues}
+          filtersValues={this.state.filterValues}
           onFilterChange={this.onFilterChange.bind(this)}
         />
       </div>

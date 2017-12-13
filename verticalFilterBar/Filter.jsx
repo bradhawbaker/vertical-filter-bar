@@ -1,27 +1,14 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React from 'react';
 import * as FilterCotrolTypeFactory from './filterControls/filterControlTypeFactory';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 import isUndefined from 'lodash/isUndefined';
 import {VelocityTransitionGroup} from 'velocity-react';
 import i18n from '../utils/i18n/i18n.js';
 import {
-  DATES_DROPDOWN_OPTIONS_CUSTOM_RANGE,
-  FILTER_TOOLTIP_CLEAR_ICON
+  FILTER_TOOLTIP_CLEAR_ICON,
+  SHOW_FILTER,
+  HIDE_FILTER
 } from './VerticalFilterBarConstants.js';
 
 class Filter extends React.Component{
@@ -29,14 +16,27 @@ class Filter extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      isOpen: undefined
+      isOpen: undefined,
+      filterControlsValues: {}
     };
   }
 
+  componentWillMount() {
+    if (!isEmpty(this.props.filterControlsValues)) {
+      this.setState({
+        isOpen: true,
+        filterControlsValues: this.props.filterControlsValues
+      });
+    }
+  }
+
   componentWillReceiveProps(nextProps){
-    if(isUndefined(this.state.isOpen)){
+    if (!isEqual(this.props.filterControlsValues, nextProps.filterControlsValues)) {
       let isOpen = this.areControlsWithValues(nextProps.filterControlsValues);
-      this.setState({isOpen});
+      this.setState({
+        isOpen: isOpen,
+        filterControlsValues: nextProps.filterControlsValues
+      });
     }
   }
 
@@ -53,15 +53,6 @@ class Filter extends React.Component{
     return haveValues;
   }
 
-  resetIsOpen(){
-    let self = this;
-    return new Promise(
-      function(resolve) {
-        self.setState({isOpen: undefined}, resolve);
-      }
-    );
-  }
-
   isOpen(){
     if(this.props.filterControlsConfig.hideHeader === true){
       return true;
@@ -69,22 +60,22 @@ class Filter extends React.Component{
     else if(!isUndefined(this.state.isOpen)){
       return this.state.isOpen;
     }
-    else if(!isEmpty(this.props.filterControlsValues)){
-      return this.areControlsWithValues(this.props.filterControlsValues);
+    else if(!isEmpty(this.state.filterControlsValues)){
+      return this.areControlsWithValues(this.state.filterControlsValues);
     }
     return false;
   }
 
   getControlValues(filterControlId){
-    if (!isUndefined(this.props.filterControlsValues[filterControlId])){
-      let filterControlsValues = JSON.parse(JSON.stringify(this.props.filterControlsValues[filterControlId]));
+    if (!isUndefined(this.state.filterControlsValues[filterControlId])){
+      let filterControlsValues = this.state.filterControlsValues[filterControlId];
       return filterControlsValues;
     }
   }
 
   getFilterControlsValues(){
-    if (!isUndefined(this.props.filterControlsValues)){
-      let filterControlsValues = JSON.parse(JSON.stringify(this.props.filterControlsValues));
+    if (!isUndefined(this.state.filterControlsValues)){
+      let filterControlsValues = this.state.filterControlsValues;
       return filterControlsValues;
     }
   }
@@ -120,14 +111,21 @@ class Filter extends React.Component{
   }
 
   clear(){
-    let self = this;
-    return new Promise(
-      function(resolve) {
-        let filterControlsValues = {};
-        self.onFilterControlChange(filterControlsValues);
-        resolve();
+    let clearedFilterControlsValues = {};
+
+    if (!isEmpty(this.state.filterControlsValues)) {
+      for (let controlId in this.props.filterControlsConfig.controls) {
+        if (!isEmpty(this.state.filterControlsValues[controlId]) &&
+          !isEmpty(this.state.filterControlsValues[controlId].values)) {
+          let emptyValues = {};
+          let emptyControler = {};
+          emptyControler['values'] = emptyValues;
+          clearedFilterControlsValues[controlId] = emptyControler;
+        }
       }
-    );
+    }
+
+    this.setState({filterControlsValues: clearedFilterControlsValues});
   }
 
   onFilterHeaderClick(){
@@ -171,13 +169,6 @@ class Filter extends React.Component{
       let FilterControlType = FilterCotrolTypeFactory.getFilterControlType(config);
       let currentCriterion = this.getControlValues(filterControlId);
       let dynamicOptions = this.getDynamicOptions(config);
-      if (config.type === 'date' && isEmpty(currentCriterion)){
-        currentCriterion = {};
-        currentCriterion.values = {};
-        currentCriterion.values.description = i18n(DATES_DROPDOWN_OPTIONS_CUSTOM_RANGE);
-        currentCriterion.values.to = null;
-        currentCriterion.values.from = null;
-      }
       if (!this.props.isDisabled){
         filterControls.push(
           <FilterControlType
@@ -212,7 +203,7 @@ class Filter extends React.Component{
           }
         </div>
         {this.props.isDisabled ? '' :
-          <div className='direction'></div>
+          <div className='direction' title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
         }
       </div>
     );
@@ -228,7 +219,7 @@ class Filter extends React.Component{
       <div className={dopFilterClassName + ' ' + filterDirectionClassName}>
         {this.createFilterHeader()}
         <VelocityTransitionGroup component='div' enter='slideDown' leave='slideUp'>
-          {isOpen ? <div className='controls'>{filterControls}</div> : '' }
+          {isOpen ? <div className='controls'>{filterControls}</div> : <div className='hiddenFilter'>{filterControls}</div> }
         </VelocityTransitionGroup>
       </div>
     );

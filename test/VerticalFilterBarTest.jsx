@@ -1,46 +1,19 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React, {Component} from 'react';
+import isEmpty from 'lodash/isEmpty';
 
 import VerticalFilterBar from '../verticalFilterBar/VerticalFilterBar.jsx';
 
 const FILTER_TITLE = 'FILTER BY';
 const dataIntegrityFilterConfiguration = {
   filters: {
-    bookmark:{
-      hideHeader: true,
-      controls : {
-        bookmarkControl : {
-          type:'checkBox',
-          options : [
-            {decode:'Bookmark Projects',code:1}
-          ],
-          filterCriterions:[
-            {fieldName : 'id', type : 'string', operator : 'in'}
-          ]
-        }
-      }
-    },
     severity:{ // Severity Filter
       label:'Severity',
       controls:{
-        regionControl:{
+        severityControl:{
           type:'dropDown',
           multiSelect: false,
           watermark: 'Any Severity',
+          defaultValue: {decode:'MAJOR',code:'MAJOR'},
           options:[
             {decode:'CRITICAL',code:'CRITICAL'},
             {decode:'MAJOR',code:'MAJOR'},
@@ -52,7 +25,7 @@ const dataIntegrityFilterConfiguration = {
     category:{ // Category Filter
       label:'Category',
       controls : {
-        typeControl :{
+        categoryControl :{
           type : 'dropDown',
           multiSelect: true,
           watermark: 'Any Category',
@@ -73,7 +46,7 @@ const dataIntegrityFilterConfiguration = {
           multiSelect: false,
           watermark: 'Any Object Type',
           options:[
-            {decode:'complex',code:'complex'},
+            {decode:'complex',code:'complex1'},
             {decode:'connector',code:'connector'},
             {decode:'customer',code:'customer'},
             {decode:'l3-network',code:'l3-network'}
@@ -88,85 +61,21 @@ const dataIntegrityFilterConfiguration = {
           type : 'date',
           multiSelect: false,
           watermark: 'Choose Date Range',
-          default: 'Last 24 hours',
+          format: 'YYYY/MM/DD',
+          defaultValue: {decode:'Today',code:'last_0_hours'},
           dynamicOptions:[
-            {decode:'Since Yesterday',code:'Last 24 hours'},
-            {decode:'Since Last Week',code:'Last 7 days'},
-            {decode:'Since Last Month',code:'Last 30 days'},
-            {decode:'Custom Range',code:'Custom Range'}
+            {decode:'Today',code:'last_0_hours'},
+            {decode:'Since Yesterday',code:'last_1_days'},
+            {decode:'Since Last Week',code:'last_1_weeks'},
+            {decode:'Since Last Month',code:'last_1_months'},
+            {decode:'Since Last Year',code:'last_1_years'},
+            {decode:'Custom Range',code:'custom_range'}
           ],
         }
       }
     }
   }
 };
-// const vnfFilterConfiguration = {
-//   filters: {
-//     1:{ // Orchestration Status
-//       label:'Orchestration Status',
-//       controls:{
-//         regionControl:{
-//           type:'dropDown',
-//           multiSelect: false,
-//           watermark: 'Any Severity',
-//           options:[
-//             {decode:'Activated',code:'Activated'},
-//             {decode:'active',code:'active'},
-//             {decode:'Configured',code:'Configured'}
-//           ],
-//         }
-//       }
-//     },
-//     2:{ // Provisioning Status
-//       label:'Provisioning Status',
-//       controls : {
-//         typeControl :{
-//           type : 'dropDown',
-//           multiSelect: true,
-//           watermark: 'Any Category',
-//           options:[
-//             {decode:'Active',code:'Active'},
-//             {decode:'CAPPED',code:'CAPPED'},
-//             {decode:'junk',code:'junk'},
-//             {decode:'No Value Selected',code:'NoValueSelected'}
-//           ],
-//         }
-//       }
-//     },
-//     7:{  // Network Function Type Filter
-//       label:'Network Function Type',
-//       controls : {
-//         typeControl :{
-//           type : 'dropDown',
-//           multiSelect: false,
-//           watermark: 'Any Object Type',
-//           options:[
-//             {decode:'NF Type 1',code:'NFType1'},
-//             {decode:'NF Type 2',code:'NFType2'},
-//             {decode:'NF Type 3',code:'NFType3'},
-//             {decode:'NF Type 4',code:'NFType4'}
-//           ],
-//         }
-//       }
-//     },
-//     8:{  // Network Function Role Filter
-//       label:'Network Function Role',
-//       controls : {
-//         typeControl :{
-//           type : 'dropDown',
-//           multiSelect: false,
-//           watermark: 'Any Object Type',
-//           options:[
-//             {decode:'NF Role 1',code:'NFRole1'},
-//             {decode:'NF Role 2',code:'NFRole2'},
-//             {decode:'NF Role 3',code:'NFRole3'},
-//             {decode:'NF Role 4',code:'NFRole4'}
-//           ],
-//         }
-//       }
-//     }
-//   }
-// };
 
 export default class VerticalFilterBarTest extends Component {
   constructor(props) {
@@ -177,22 +86,90 @@ export default class VerticalFilterBarTest extends Component {
     this.onFilter = this.onFilter.bind(this);
   }
 
+  getDefaultFilterValues(filterConfig) {
+    let defaultValues = {};
+
+    for (let filterId in filterConfig) {
+      let filter = {};
+      let controllers = {};
+      for (let filterControlerId in filterConfig[filterId]['controls']) {
+        let controller = filterConfig[filterId]['controls'][filterControlerId];
+        let cloneController = {};
+        if (controller.defaultValue) {
+          cloneController.values = controller.defaultValue;
+          controllers[filterControlerId] = cloneController;
+        }
+      }
+
+      if (!isEmpty(controllers)) {
+        filter.controls = controllers;
+        defaultValues[filterId] = filter;
+      }
+    }
+
+    return defaultValues;
+  }
+
+  componentWillMount() {
+    let defaultValues = this.getDefaultFilterValues(dataIntegrityFilterConfiguration.filters);
+    if (Object.keys(defaultValues).length > 0) {
+      this.onFilter(defaultValues);
+    }
+  }
+
   onFilter(filterValues) {
-    console.log(filterValues);
     this.setState({filterValues: filterValues});
   }
 
+  getFilterDefault(filterId) {
+    let filterControlId = Object.keys(dataIntegrityFilterConfiguration['filters'][filterId]['controls'])[0];
+    let defaultValue =
+      dataIntegrityFilterConfiguration['filters'][filterId]['controls'][filterControlId]['defaultValue'];
+    if (!defaultValue) {
+      defaultValue = {};
+    }
+    return defaultValue;
+  }
+
+  onClearAll() {
+    let clearedFilterValues = {};
+
+    for (let filterId in dataIntegrityFilterConfiguration['filters']) {
+      let filterDefaultValue = this.getFilterDefault(filterId);
+      if (!isEmpty(filterDefaultValue) || this.state.filterValues[filterId]) {
+        let filterControlId = Object.keys(dataIntegrityFilterConfiguration['filters'][filterId]['controls'])[0];
+        let controller = {};
+        controller.values = filterDefaultValue;
+        let controllers = {};
+        controllers[filterControlId] = controller;
+        let controls = {};
+        controls.controls = controllers;
+        clearedFilterValues[filterId] = controls;
+      }
+    }
+
+    this.onFilter(clearedFilterValues);
+  }
+
   render() {
+    let selectedValues = JSON.stringify(this.state.filterValues);
+
     return (
       <div>
         <h1>Vertical Filter Bar Test</h1>
-
-        <VerticalFilterBar
-          filtersConfig={dataIntegrityFilterConfiguration.filters}
-          filterValues={this.state.filterValues}
-          onFilterChange={this.onFilter}
-          filterTitle={FILTER_TITLE}
-        />
+        <div className='filter-bar-div'>
+          <VerticalFilterBar
+            filtersConfig={dataIntegrityFilterConfiguration.filters}
+            filterValues={this.state.filterValues}
+            onFilterChange={this.onFilter}
+            filterTitle={FILTER_TITLE}
+          />
+        </div>
+        <div className='filter-results-div'>
+          <div className='clear-all' title='REST' onClick={this.onClearAll.bind(this)}>Click HERE to reset filters to defaults</div>
+          <h2>Selected Filters</h2>
+          <p>{selectedValues}</p>
+        </div>
       </div>
     );
   }

@@ -11,22 +11,9 @@ $res-folder: 'icons';
   font-family: $font-family-semibold;
   background-color: $background-color;
   box-shadow: 2px 0px 1.98px 0.02px rgba(0, 0, 0, 0.09);
-  height: 100%;
+
   .filter-group {
     width: 100%;
-    height: calc(100% - 30px);
-    overflow-y: scroll;
-  }
-  .filter-group::-webkit-scrollbar-thumb {
-    width: 6px;
-    background-color: #E2E7EA;
-  }
-  .filter-group:hover {
-    overflow-y: scroll;
-  }
-  .filter-group:hover::-webkit-scrollbar-thumb {
-    width: 6px;
-    background-color: #BEC3C6;
   }
 }
 
@@ -138,6 +125,10 @@ $res-folder: 'icons';
     color: #404f5a;
     margin-bottom: 2px;
   }
+}
+
+.hiddenFilter {
+  display: none !important;
 }
 
 .dropdown-filter-control {
@@ -272,6 +263,10 @@ $res-folder: 'icons';
 
 /*DATE PICKER*/
 
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
 .react-datepicker .react-datepicker__day--selected {
   background-color: $main-color;
 }
@@ -287,9 +282,11 @@ $res-folder: 'icons';
 .date-picker-filter-control input[value=""] {
   background: #fff url($res-folder+'/calendar-icon.svg') no-repeat 97% center;
   background-size: 13px 14px;
+  width: 100%;
 }
 
 .date-picker-filter-control input:not([value=""]) {
   background: #fff url($res-folder+'/calendar-icon-hover.svg') no-repeat 97% center;
   background-size: 13px 14px;
+  width: 100%;
 }

@@ -1,25 +1,12 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 export const FILTER_BAR_CLEAR_ALL = 'Clear All';
 export const FILTER_BAR_CLEAR_ALL_TOOL_TIP = 'The "Clear All" button shall reset all filters back to their default value';
 
 export const DATES_DROPDOWN_OPTIONS_CUSTOM_RANGE = 'Some descriptive text for dates custom range';
 export const FILTER_TOOLTIP_CLEAR_ICON = 'Clear';
+export const SHOW_FILTER = 'Show Filter';
+export const HIDE_FILTER = 'Hide Filter';
 
-export const DatesDropDownOptionsCustomRange = 'Custom Range';
+export const DatesDropDownOptionsCustomRange = 'custom_range';
 export const DatesDropDownOptionsLast = 'Last';
 export const DatesDropDownOptionsLast24Hours = 'Last 24 hours';
 export const DatesDropDownOptionsLast2Days = 'Last 2 days';

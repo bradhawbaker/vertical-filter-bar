@@ -1,25 +1,34 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React from 'react';
 import FilterControl from './filterControl';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 import Select from 'react-select';
 import i18n from '../../utils/i18n/i18n.js';
 
 class DropDownFilterControl extends FilterControl{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentCriterion: {}
+    };
+  }
+
+  componentWillMount() {
+    if (this.props.currentCriterion && this.props.currentCriterion.values) {
+      this.handleChange(this.props.currentCriterion.values);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+      (!this.state.currentCriterion ||
+      (nextProps.currentCriterion.values.code && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.code, nextProps.currentCriterion.values.code)) ||
+      !isEqual(nextProps.currentCriterion.values, this.state.currentCriterion.values)))) {
+      this.handleChange(nextProps.currentCriterion.values);
+    }
+  }
 
   handleChange(value){
     let selectedValues = {};
@@ -28,6 +37,7 @@ class DropDownFilterControl extends FilterControl{
       selectedValues.values = value;
     }
 
+    this.setState({currentCriterion: selectedValues});
     this.props.onFilterControlChange(selectedValues, this.props.controlId);
   }
 
@@ -38,9 +48,9 @@ class DropDownFilterControl extends FilterControl{
   getSelectValues(){
     let selectedValues = null;
 
-    if (!isEmpty(this.props.currentCriterion)){
+    if (!isEmpty(this.state.currentCriterion)){
       selectedValues = [];
-      let configValue = this.props.currentCriterion.values;
+      let configValue = this.state.currentCriterion.values;
       if (!Array.isArray(configValue)){
         selectedValues.push(configValue);
       }

@@ -1,19 +1,6 @@
-/*
- * Copyright © 2016-2017 European Support Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React from 'react';
+import isEqual from 'lodash/isEqual';
+
 import FilterControl from './filterControl';
 import Select from 'react-select';
 import isEmpty from 'lodash/isEmpty';
@@ -43,16 +30,47 @@ import {
 
 class DateFilterControl extends FilterControl{
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentCriterion: {}
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.currentCriterion && this.props.currentCriterion.values) {
+      this.onSelect(this.props.currentCriterion.values);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+      (!this.state.currentCriterion ||
+      (nextProps.currentCriterion.values.code && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.code, nextProps.currentCriterion.values.code)) ||
+      (!isEmpty(this.state.currentCriterion.values) && isEmpty(nextProps.currentCriterion.values)) ||
+      (!isEmpty(nextProps.currentCriterion.values) && isEmpty(this.state.currentCriterion.values))))) {
+      this.onSelect(nextProps.currentCriterion.values);
+    } else if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+      nextProps.currentCriterion.values.code === 'custom_range' &&
+      ((nextProps.currentCriterion.values.to && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.to, nextProps.currentCriterion.values.to))) ||
+      (nextProps.currentCriterion.values.from && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.from, nextProps.currentCriterion.values.from))))) {
+      this.onSelect(nextProps.currentCriterion.values);
+    }
+  }
+
   onSelect(selected){
     let selectedValues = {};
     if (!isEmpty(selected)){
       let description = selected.code;
 
-      if (description === 'Custom Range'){
+      if (description === 'custom_range'){
         selectedValues.values = {
-          'from': null ,
-          'to': null,
-          'description': description
+          'from': (selected.from || null),
+          'to': (selected.to || null),
+          'code': description
         };
       }
       else{
@@ -60,13 +78,13 @@ class DateFilterControl extends FilterControl{
         selectedValues.values = {
           'from': selectedDates.from,
           'to': selectedDates.to,
-          'description': description
+          'code': description
         };
       }
     }
 
+    this.setState({currentCriterion: selectedValues});
     this.props.onFilterControlChange(selectedValues, this.props.controlId);
-
   }
 
   onDatePickerChange(fromTo, selectedDate){
@@ -74,36 +92,41 @@ class DateFilterControl extends FilterControl{
     selectedValues.values = {
       'from': null ,
       'to': null,
-      'description': 'Custom Range'
+      'code': 'custom_range'
     };
 
     if (selectedDate.isValid()){
-      let fromValue = this.props.currentCriterion.values.from;
-      let toValue = this.props.currentCriterion.values.to;
+      let fromValue = this.state.currentCriterion.values.from;
+      let toValue = this.state.currentCriterion.values.to;
       if (fromTo === 'from'){
-        fromValue = selectedDate.toISOString();
+        let startOfDay = selectedDate.toDate();
+        startOfDay.setHours(0, 0, 0, 0);
+        fromValue = startOfDay;
       }
       else{
-        toValue = selectedDate.toISOString();
+        let endOfDay = selectedDate.toDate();
+        endOfDay.setHours(23, 59, 59, 999);
+        toValue = endOfDay;
       }
 
       if (!isEmpty(selectedDate)){
-        let description = 'Custom Range';
+        let description = 'custom_range';
 
         selectedValues.values = {
           'from': fromValue,
           'to': toValue,
-          'description': description
+          'code': description
         };
       }
     }
 
+    this.setState({currentCriterion: selectedValues});
     this.props.onFilterControlChange(selectedValues, this.props.controlId);
   }
 
   getDateDropDown(){
     let multiSelect = (this.props.config.multiSelect === true);
-    let dropdownValue = !isEmpty(this.props.currentCriterion) ? this.props.currentCriterion.values.description : null;
+    let dropdownValue = !isEmpty(this.state.currentCriterion) ? this.state.currentCriterion.values.code : null;
 
     return (
       <div className='dropdown-filter-control' >
@@ -112,7 +135,6 @@ class DateFilterControl extends FilterControl{
           multi={multiSelect}
           placeholder = {i18n(this.props.config.watermark)}
           value={dropdownValue}
-          valueRenderer = {this.getSelectValue.bind(this, dropdownValue)}
           labelKey = 'decode'
           valueKey = 'code'
           options = {this.getSelectOptions()}
@@ -123,23 +145,23 @@ class DateFilterControl extends FilterControl{
       </div> );
   }
 
-  getSelectValue(dropdownValue){
-    return dropdownValue;
-  }
-
   getDatePicker(){
-
-    if (isEmpty(this.props.currentCriterion)){
+    if (isEmpty(this.state.currentCriterion)){
       return;
     }
 
-    let currentValue = this.props.currentCriterion.values;
+    let currentValue = this.state.currentCriterion.values;
 
     if (!isEmpty(currentValue)){
-      if (currentValue.description === 'Custom Range'){
+      if (currentValue.code === 'custom_range'){
         let startDate = moment(currentValue.from).isValid() ? moment(currentValue.from) : currentValue.from;
         let endDate = moment(currentValue.to).isValid() ? moment(currentValue.to) : currentValue.to;
         let className = 'date-picker-filter-control ' + this.props.controlId;
+        let dateFormat = 'YYYY-MM-DD';
+
+        if (this.props.config.format) {
+          dateFormat = this.props.config.format;
+        }
 
         return (
           <div>
@@ -148,17 +170,17 @@ class DateFilterControl extends FilterControl{
               <DatePicker
                 key='startDate'
                 filterDate={this.excludeStartDates.bind(this, endDate)}
-                dateFormat='DD/MM/YYYY'
+                dateFormat={dateFormat}
                 placeholderText={i18n(DatePickerPlaceholderAllDates)}
                 selected={startDate}
-                onChange={this.onDatePickerChange.bind(this, 'from')} />
+                onChange={this.onDatePickerChange.bind(this, 'from')}/>
             </div>
             <div className={className}>
               <div>{i18n(DatePickerLabelTo)}</div>
               <DatePicker
                 key='endDate'
                 filterDate={this.excludeEndDates.bind(this, startDate)}
-                dateFormat='DD/MM/YYYY'
+                dateFormat={dateFormat}
                 placeholderText={i18n(DatePickerPlaceholderAllDates)}
                 selected={endDate}
                 openToDate={startDate}
@@ -185,27 +207,119 @@ class DateFilterControl extends FilterControl{
     return true;
   }
 
-  getDatesFromDescription(description){
+  calculateLastDates(interval, unit) {
     let dates = {};
-    let numberPattern = /\d+/g;
-    let offSet = description.match(numberPattern);
-    offSet = parseInt(offSet);
-    if(offSet === 24){
-      offSet = 1;
-    }
     let fromDate = new Date();
     let toDate = new Date();
     let today = new Date();
-    if(description.indexOf('Last') !== -1){
-      toDate.setDate(today.getDate());
-      fromDate.setDate(today.getDate() - offSet);
+
+    switch(unit) {
+      case 'hours':
+        toDate.setDate(today.getDate());
+        fromDate.setDate(today.getDate());
+        fromDate.setHours(today.getHours() - interval);
+        break;
+      case 'days':
+        toDate.setDate(today.getDate());
+        toDate.setHours(23, 59, 59, 999);
+        fromDate.setDate(today.getDate() - interval);
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      case 'weeks':
+        toDate.setDate(today.getDate());
+        toDate.setHours(23, 59, 59, 999);
+        fromDate.setDate(today.getDate() - (7 * interval));
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      case 'months':
+        toDate.setDate(today.getDate());
+        toDate.setHours(23, 59, 59, 999);
+        fromDate.setDate(today.getDate());
+        fromDate.setMonth(today.getMonth() - interval);
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      case 'years':
+        toDate.setDate(today.getDate());
+        toDate.setHours(23, 59, 59, 999);
+        fromDate.setDate(today.getDate());
+        fromDate.setFullYear(today.getFullYear() - interval);
+        fromDate.setHours(0, 0, 0, 0);
+        break;
     }
-    else if(description.indexOf('Next') !== -1){
-      fromDate.setDate(today.getDate());
-      toDate.setDate(today.getDate() + offSet);
-    }
+
     dates.from = fromDate;
     dates.to = toDate;
+
+    return dates;
+  }
+
+  calculateNextDates(interval, unit) {
+    let dates = {};
+    let fromDate = new Date();
+    let toDate = new Date();
+    let today = new Date();
+
+    switch(unit) {
+      case 'hours':
+        fromDate.setDate(today.getDate());
+        toDate.setDate(today.getDate());
+        toDate.setHours(today.getHours() + interval);
+        break;
+      case 'days':
+        fromDate.setDate(today.getDate());
+        fromDate.setHours(0, 0, 0, 0);
+        toDate.setDate(today.getDate() + interval);
+        toDate.setHours(23, 59, 59, 999);
+        break;
+      case 'weeks':
+        fromDate.setDate(today.getDate());
+        fromDate.setHours(0, 0, 0, 0);
+        toDate.setDate(today.getDate() + (7 * interval));
+        toDate.setHours(23, 59, 59, 999);
+        break;
+      case 'months':
+        fromDate.setDate(today.getDate());
+        fromDate.setHours(0, 0, 0, 0);
+        toDate.setDate(today.getDate());
+        toDate.setMonth(today.getMonth() + interval);
+        toDate.setHours(23, 59, 59, 999);
+        break;
+      case 'years':
+        fromDate.setDate(today.getDate());
+        fromDate.setHours(0, 0, 0, 0);
+        toDate.setDate(today.getDate());
+        toDate.setFullYear(today.getFullYear() - interval);
+        toDate.setHours(23, 59, 59, 999);
+        break;
+    }
+
+    dates.from = fromDate;
+    dates.to = toDate;
+
+    return dates;
+  }
+
+  getDatesFromDescription(description){
+    let dates = {};
+
+    let parsedDatesArray = description.split('_');
+
+    if (parsedDatesArray[1] === '0') {
+      // interval is 0, assume today (0:00:00 to 23:59:59)
+      let fromDate = new Date();
+      let toDate = new Date();
+      let today = new Date();
+      toDate.setDate(today.getDate());
+      toDate.setHours(23, 59, 59, 999);
+      fromDate.setDate(today.getDate());
+      fromDate.setHours(0, 0, 0, 0);
+      dates.from = fromDate;
+      dates.to = toDate;
+    } else if (parsedDatesArray[0] === 'last') {
+      dates = this.calculateLastDates(parsedDatesArray[1], parsedDatesArray[2]);
+    } else if (parsedDatesArray[0] === 'next') {
+      dates = this.calculateNextDates(parsedDatesArray[1], parsedDatesArray[2]);
+    }
 
     return dates;
   }
@@ -219,19 +333,19 @@ class DateFilterControl extends FilterControl{
     if(!isEmpty(this.props.config.dynamicOptions)){
       configOptions = this.get(this.props.data,this.props.config.dynamicOptions);
     } else{
-      configOptions = [{decode:i18n(DatesDropDownOptionsCustomRange), code:'Custom Range'},
+      configOptions = [{decode:i18n(DatesDropDownOptionsCustomRange), code:'custom_range'},
         {decode: i18n(DatesDropDownOptionsLast), code:'Last',disabled:true},
-        {decode: i18n(DatesDropDownOptionsLast24Hours), code:'Last 24 hours'},
-        {decode: i18n(DatesDropDownOptionsLast2Days), code:'Last 2 days'},
-        {decode: i18n(DatesDropDownOptionsLast3Days), code:'Last 3 days'},
-        {decode: i18n(DatesDropDownOptionsLast4Days), code:'Last 4 days'},
-        {decode: i18n(DatesDropDownOptionsLast5Days), code:'Last 5 days'},
+        {decode: i18n(DatesDropDownOptionsLast24Hours), code:'Last_24_hours'},
+        {decode: i18n(DatesDropDownOptionsLast2Days), code:'Last_2-days'},
+        {decode: i18n(DatesDropDownOptionsLast3Days), code:'Last_3_days'},
+        {decode: i18n(DatesDropDownOptionsLast4Days), code:'Last_4_days'},
+        {decode: i18n(DatesDropDownOptionsLast5Days), code:'Last_5_days'},
         {decode: i18n(DatesDropDownOptionsNext), code:'Next',disabled:true},
-        {decode: i18n(DatesDropDownOptionsNext24Hours), code:'Next 24 hours'},
-        {decode: i18n(DatesDropDownOptionsNext2Days), code:'Next 2 days'},
-        {decode: i18n(DatesDropDownOptionsNext3Days), code:'Next 3 days'},
-        {decode: i18n(DatesDropDownOptionsNext4Days), code:'Next 4 days'},
-        {decode: i18n(DatesDropDownOptionsNext5Days), code:'Next 5 days'} ];
+        {decode: i18n(DatesDropDownOptionsNext24Hours), code:'Next_24_hours'},
+        {decode: i18n(DatesDropDownOptionsNext2Days), code:'Next_2_days'},
+        {decode: i18n(DatesDropDownOptionsNext3Days), code:'Next_3_days'},
+        {decode: i18n(DatesDropDownOptionsNext4Days), code:'Next_4_days'},
+        {decode: i18n(DatesDropDownOptionsNext5Days), code:'Next_5_days'} ];
     }
 
     return configOptions;
@@ -240,8 +354,8 @@ class DateFilterControl extends FilterControl{
   render(){
     return (
       <div>
-        {this.getDateDropDown(this.props.currentCriterion)}
-        {this.getDatePicker(this.props.currentCriterion)}
+        {this.getDateDropDown(this.state.currentCriterion)}
+        {this.getDatePicker(this.state.currentCriterion)}
       </div>
     );
   }

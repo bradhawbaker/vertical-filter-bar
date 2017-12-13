@@ -1,6 +1,6 @@
 {
   "name": "vertical-filter-bar",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "dist/bundle.js",
   "author": "",
