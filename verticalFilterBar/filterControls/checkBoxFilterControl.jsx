@@ -15,8 +15,8 @@
  */
 import React from 'react';
 import FilterControl from './filterControl';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash.isEmpty';
+import isEqual from 'lodash.isEqual';
 import differenceWith from 'lodash/differenceWith';
 import pull from 'lodash/pull';
 
