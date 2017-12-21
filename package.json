@@ -4,14 +4,11 @@
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "dist/bundle.js",
   "author": "",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "http://d2qagit.corp.amdocs.com/ST_MICRO/vertical-filter-bar.git"
-  },
-  "publishConfig": {
-    "registry": "http://10.247.57.144:8081/repository/npm-aee/"
-  },
+    "url": "https://github.com/StormUIComponents/vertical-filter-bar.git"
+  }
   "dependencies": {
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
