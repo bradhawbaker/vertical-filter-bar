@@ -3,6 +3,7 @@ import isEqual from 'lodash.isEqual';
 
 import FilterControl from './filterControl';
 import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import isEmpty from 'lodash.isEmpty';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
