@@ -3,6 +3,7 @@ import FilterControl from './filterControl';
 import isEmpty from 'lodash.isEmpty';
 import isEqual from 'lodash.isEqual';
 import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import i18n from '../../utils/i18n/i18n.js';
 
 class DropDownFilterControl extends FilterControl{
