@@ -1,6 +1,7 @@
 
 .idea
-
+/coverage
+/lcov-report
 node_modules
 .npmrc
 test/coverage

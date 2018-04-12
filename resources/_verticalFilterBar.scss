@@ -219,6 +219,8 @@ $res-folder: 'icons';
   height: 30px;
   padding-left: 10px;
   font-family: $font-family-regular;
+  cursor: pointer;
+  
   &:focus {
     border: 1px solid $main-color;
     outline: none;
