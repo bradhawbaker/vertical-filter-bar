@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "http://d2qagit.corp.amdocs.com/ST_MICRO/vertical-filter-bar.git"
+    "url": "https://github.com/StormUIComponents/vertical-filter-bar.git"
   },
   "dependencies": {
     "prop-types": "^15.6.2",
