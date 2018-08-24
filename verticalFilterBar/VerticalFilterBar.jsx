@@ -1,6 +1,6 @@
 import React from 'react';
-import isEqual from 'lodash.isEqual';
-import isEmpty from 'lodash.isEmpty';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 
 import i18n from '../utils/i18n/i18n.js';
 import FilterGroup from './FilterGroup.jsx';

@@ -31,7 +31,7 @@ var config = {
       exclude: /node_modules/
     }],
     loaders: [
-      {test: /\.(js|jsx)$/, loaders: ['react-hot', 'babel-loader', 'eslint-loader'], exclude: /node_modules/},
+      {test: /\.(js|jsx)$/, loaders: ['babel-loader', 'eslint-loader'], exclude: /node_modules/},
       {test: /\.(png|jpg|svg)(\?.*)?$/, loader: 'url-loader?limit=16384'},
       {test: /\.(css|scss)$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap']}
     ]

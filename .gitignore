@@ -1,10 +1,8 @@
 
 .idea
-/coverage
-/lcov-report
+dist
+
 node_modules
-.npmrc
 test/coverage
 npm-debug.log
 .vscode
-dist

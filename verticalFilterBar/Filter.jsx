@@ -1,10 +1,9 @@
 import React from 'react';
-import isEmpty from 'lodash.isEmpty';
-import isEqual from 'lodash.isEqual';
-import isUndefined from 'lodash.isUndefined';
-import {VelocityTransitionGroup} from 'velocity-react';
-
 import * as FilterCotrolTypeFactory from './filterControls/filterControlTypeFactory';
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
+import isUndefined from 'lodash/isUndefined';
+import {VelocityTransitionGroup} from 'velocity-react';
 import i18n from '../utils/i18n/i18n.js';
 import {
   FILTER_TOOLTIP_CLEAR_ICON,
