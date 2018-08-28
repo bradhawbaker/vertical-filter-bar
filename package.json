@@ -1,6 +1,6 @@
 {
   "name": "vertical-filter-bar",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "dist/bundle.js",
   "author": "",
@@ -9,6 +9,15 @@
     "type": "git",
     "url": "https://github.com/StormUIComponents/vertical-filter-bar.git"
   },
+  "files": [
+    "dist/",
+    "resource/",
+    "verticalFilterBar/",
+    "utils/",
+    "index.js",
+    "package.json",
+    "README.MD"
+  ],
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
