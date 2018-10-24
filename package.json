@@ -1,10 +1,10 @@
 {
   "name": "vertical-filter-bar",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "dist/bundle.js",
   "author": "",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/StormUIComponents/vertical-filter-bar.git"
@@ -16,13 +16,15 @@
     "utils/",
     "index.js",
     "package.json",
+    "LICENSE",
     "README.MD"
   ],
   "dependencies": {
     "prop-types": "^15.6.2",
+    "moment": "^2.13.0",
     "react": "^16.4.1",
     "react-bootstrap": "^0.31.2",
-    "react-datepicker": "^0.55.0",
+    "react-datepicker": "^1.7.0",
     "react-select": "^1.2.1",
     "url-loader": "^0.5.9",
     "velocity-react": "^1.4.1"
@@ -46,7 +48,7 @@
     "immutable": "^3.8.1",
     "node-sass": "^3.10.1",
     "react-addons-test-utils": "^15.3.2",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.4.2",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.4.4",

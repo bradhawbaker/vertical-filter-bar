@@ -1,8 +1,7 @@
-
 .idea
 dist
-
 node_modules
+package
 test/coverage
 npm-debug.log
 .vscode
