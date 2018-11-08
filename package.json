@@ -2,7 +2,7 @@
   "name": "vertical-filter-bar",
   "version": "1.0.10",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
-  "main": "dist/bundle.js",
+  "main": "dist/vertical-filter-bundle.js",
   "author": "",
   "license": "Apache-2.0",
   "repository": {
@@ -64,7 +64,6 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "webpack",
-    "start": "webpack-dev-server",
     "startDev": "webpack-dev-server --config webpack.devConfig.js"
   },
   "babel": {
