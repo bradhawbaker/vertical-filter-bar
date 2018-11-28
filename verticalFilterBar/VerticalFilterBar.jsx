@@ -18,13 +18,13 @@ class VerticalFilterBar extends React.Component{
     };
   }
 
-  onFilterChange(filtersValues){
+  onFilterChange(filtersValues, filterId){
     this.setState(() => {
       return {filterValues: filtersValues};
     });
 
     if(this.props.onFilterChange){
-      this.props.onFilterChange(filtersValues);
+      this.props.onFilterChange(filtersValues, filterId);
     }
   }
 

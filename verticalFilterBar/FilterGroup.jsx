@@ -45,7 +45,7 @@ class FilterGroup extends React.Component{
       }
 
       if(this.props.onFilterChange){
-        this.props.onFilterChange(filtersValues);
+        this.props.onFilterChange(filtersValues, filterId);
       }
 
       return {filtersValues: filtersValues};
