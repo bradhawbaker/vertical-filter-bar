@@ -166,7 +166,8 @@ export default class VerticalFilterBarTest extends Component {
           />
         </div>
         <div className='filter-results-div'>
-          <div className='clear-all' title='REST' onClick={this.onClearAll.bind(this)}>Click HERE to reset filters to defaults</div>
+          <div className='clear-all' title='REST'
+               onClick={this.onClearAll.bind(this)}>Click HERE to reset filters to defaults</div>
           <h2>Selected Filters</h2>
           <p>{selectedValues}</p>
         </div>

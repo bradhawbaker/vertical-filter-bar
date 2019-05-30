@@ -1,10 +1,10 @@
-import VerticalFilterBarTest from 'test/VerticalFilterBarTest.jsx';
-import VerticalFilterBar from 'verticalFilterBar/VerticalFilterBar.jsx';
-import 'resources/_verticalFilterBar.scss';
-import 'resources/_react-select.css';
-import 'test/_verticalFilterBarTest.scss';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-export {
-  VerticalFilterBar,
-  VerticalFilterBarTest
-};
+import VerticalFilterBarTest from './test/VerticalFilterBarTest.jsx';
+import './resources/_verticalFilterBar.scss';
+import './test/_verticalFilterBarTest.scss';
+import './resources/_react-select.css';
+
+
+ReactDOM.render(<VerticalFilterBarTest />, document.getElementById('app'));

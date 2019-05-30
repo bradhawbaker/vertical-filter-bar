@@ -1,9 +1,10 @@
 import React from 'react';
-import FilterControl from './filterControl';
+
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import Select from 'react-select';
-import i18n from '../../utils/i18n/i18n.js';
+import FilterControl from './filterControl';
+import i18n from '../../utils/i18n/i18n';
 
 class DropDownFilterControl extends FilterControl{
 

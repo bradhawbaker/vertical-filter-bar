@@ -1,23 +1,36 @@
 import React from 'react';
-import * as FilterCotrolTypeFactory from './filterControls/filterControlTypeFactory';
+import {VelocityTransitionGroup} from 'velocity-react';
+import { PropTypes } from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import isUndefined from 'lodash/isUndefined';
-import {VelocityTransitionGroup} from 'velocity-react';
-import i18n from '../utils/i18n/i18n.js';
+import i18n from '../utils/i18n/i18n';
+import getFilterControlType from './filterControls/filterControlTypeFactory';
 import {
   FILTER_TOOLTIP_CLEAR_ICON,
   SHOW_FILTER,
   HIDE_FILTER
-} from './VerticalFilterBarConstants.js';
+} from './VerticalFilterBarConstants';
 
 class Filter extends React.Component{
+
+
 
   constructor(props){
     super(props);
     this.state = {
       isOpen: undefined,
       filterControlsValues: {}
+    };
+  }
+  static get propTypes() {
+    return {
+      filterControlsValues: PropTypes.any,
+      filterControlsConfig: PropTypes.any,
+      onFilterChange: PropTypes.func,
+      filterId: PropTypes.any,
+      data:PropTypes.any,
+      isDisabled: PropTypes.any,
     };
   }
 
@@ -166,7 +179,7 @@ class Filter extends React.Component{
     for(var i = 0; i < filterControlsIds.length; i++){
       let filterControlId = filterControlsIds[i];
       var config = filtersConfig.controls[filterControlId];
-      let FilterControlType = FilterCotrolTypeFactory.getFilterControlType(config);
+      let FilterControlType = getFilterControlType(config);
       let currentCriterion = this.getControlValues(filterControlId);
       let dynamicOptions = this.getDynamicOptions(config);
       if (!this.props.isDisabled){
@@ -197,13 +210,15 @@ class Filter extends React.Component{
       <div onClick={this.onFilterHeaderClick.bind(this)}className='filter-header'>
         <div className='title' title={label}>{label}
           {!this.areControlsWithValues(this.getFilterControlsValues()) || this.props.isDisabled ? '' :
-            <div className='iconClickArea' title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)} onClick={this.onFilterIconClick.bind(this)}>
+            <div className='iconClickArea' title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
+                 onClick={this.onFilterIconClick.bind(this)}>
               <div className='icon'></div>
             </div>
           }
         </div>
         {this.props.isDisabled ? '' :
-          <div className='direction' title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
+          <div className='direction'
+               title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
         }
       </div>
     );
@@ -219,7 +234,8 @@ class Filter extends React.Component{
       <div className={dopFilterClassName + ' ' + filterDirectionClassName}>
         {this.createFilterHeader()}
         <VelocityTransitionGroup component='div' enter='slideDown' leave='slideUp'>
-          {isOpen ? <div className='controls'>{filterControls}</div> : <div className='hiddenFilter'>{filterControls}</div> }
+          {isOpen ? <div className='controls'>{filterControls}</div> :
+            <div className='hiddenFilter'>{filterControls}</div> }
         </VelocityTransitionGroup>
       </div>
     );

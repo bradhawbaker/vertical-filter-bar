@@ -280,13 +280,13 @@ $res-folder: 'icons';
 }
 
 .date-picker-filter-control input[value=""] {
-  background: #fff url($res-folder+'/calendar-icon.svg') no-repeat 97% center;
+ // background: #fff url($res-folder+'/calendar-icon.svg') no-repeat 97% center;
   background-size: 13px 14px;
   width: 100%;
 }
 
 .date-picker-filter-control input:not([value=""]) {
-  background: #fff url($res-folder+'/calendar-icon-hover.svg') no-repeat 97% center;
+ // background: #fff url($res-folder+'/calendar-icon-hover.svg') no-repeat 97% center;
   background-size: 13px 14px;
   width: 100%;
 }

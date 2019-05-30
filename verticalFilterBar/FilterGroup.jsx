@@ -1,7 +1,9 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import {PropTypes} from 'prop-types';
 import Filter from './Filter.jsx';
+
 
 class FilterGroup extends React.Component{
 
@@ -12,6 +14,16 @@ class FilterGroup extends React.Component{
     };
   }
 
+  static get propTypes() {
+    return {
+      filtersValues: PropTypes.any,
+      filtersConfig: PropTypes.any,
+      onFilterChange: PropTypes.func,
+      filtersOrder: PropTypes.any,
+      children: PropTypes.any,
+      data: PropTypes.any
+    };
+  }
   resetIsOpen(){
     let self = this;
     let promises = [];
