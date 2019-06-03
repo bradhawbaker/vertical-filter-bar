@@ -8,14 +8,14 @@ const core = require('./webpack.core.config');
 module.exports = merge(core, {
   entry: {
     'vertical-filter-bar' : [
-      path.join(__dirname, './index.js')
+      path.join(__dirname, './dev/src', '/index.js')
     ]
   },
   module: {
     rules: [
       {
         test: /\.(css|sass|scss)$/,
-        use: ['css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },

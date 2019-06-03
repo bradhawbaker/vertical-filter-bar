@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import isEmpty from 'lodash/isEmpty';
 
-import VerticalFilterBar from '../verticalFilterBar/VerticalFilterBar.jsx';
+import VerticalFilterBar from '../../verticalFilterBar/VerticalFilterBar.jsx';
 
 const FILTER_TITLE = 'FILTER BY';
 const dataIntegrityFilterConfiguration = {
@@ -110,12 +110,7 @@ export default class VerticalFilterBarTest extends Component {
     return defaultValues;
   }
 
-  componentWillMount() {
-    let defaultValues = this.getDefaultFilterValues(dataIntegrityFilterConfiguration.filters);
-    if (Object.keys(defaultValues).length > 0) {
-      this.onFilter(defaultValues);
-    }
-  }
+
 
   onFilter(filterValues) {
     this.setState({filterValues: filterValues});

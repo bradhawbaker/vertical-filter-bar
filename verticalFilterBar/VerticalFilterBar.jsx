@@ -4,6 +4,9 @@ import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
 import i18n from '../utils/i18n/i18n';
 import FilterGroup from './FilterGroup.jsx';
+import '../resources/_react-select.css';
+import '../resources/_verticalFilterBar.scss';
+
 import {
   FILTER_BAR_CLEAR_ALL,
   FILTER_BAR_CLEAR_ALL_TOOL_TIP

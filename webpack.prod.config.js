@@ -23,17 +23,8 @@ module.exports = merge(core, {
       {
         test: /\.(css|sass|scss)$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // you can specify a publicPath here
-              // by default it uses publicPath in webpackOptions.output
-              hmr: process.env.NODE_ENV === 'development',
-              // if hmr does not work, this is a forceful method.
-              reloadAll: true
-            },
-          },
-           'css-loader','sass-loader'
+
+           'style-loader', 'css-loader','sass-loader'
         ]
       }
     ]
