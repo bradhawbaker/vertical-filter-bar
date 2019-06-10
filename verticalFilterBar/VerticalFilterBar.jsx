@@ -1,13 +1,16 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-
-import i18n from '../utils/i18n/i18n.js';
+import {PropTypes} from 'prop-types';
+import i18n from '../utils/i18n/i18n';
 import FilterGroup from './FilterGroup.jsx';
+import '../resources/_react-select.css';
+import '../resources/_verticalFilterBar.scss';
+
 import {
   FILTER_BAR_CLEAR_ALL,
   FILTER_BAR_CLEAR_ALL_TOOL_TIP
-} from './VerticalFilterBarConstants.js';
+} from './VerticalFilterBarConstants';
 
 class VerticalFilterBar extends React.Component{
 
@@ -18,6 +21,16 @@ class VerticalFilterBar extends React.Component{
     };
   }
 
+  static get propTypes() {
+    return {
+      filterValues: PropTypes.any,
+      filterTitle: PropTypes.any,
+      filtersConfig: PropTypes.any,
+      filtersOrder: PropTypes.any,
+      data:  PropTypes.any,
+      onFilterChange: PropTypes.func
+    };
+  }
   onFilterChange(filtersValues, filterId){
     this.setState(() => {
       return {filterValues: filtersValues};
@@ -67,7 +80,8 @@ class VerticalFilterBar extends React.Component{
     return (
       <div className='vfb-filters'>
         <div className='vfb-header'>{this.props.filterTitle}
-          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)} onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
+          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
+               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
         </div>
         <FilterGroup
           ref={(filters) => this.filters = filters}

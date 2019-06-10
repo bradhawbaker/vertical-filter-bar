@@ -1,13 +1,13 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-
-import FilterControl from './filterControl';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 import Select from 'react-select';
 import isEmpty from 'lodash/isEmpty';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
+
+import FilterControl from './filterControl';
 import 'react-datepicker/dist/react-datepicker.css';
-import i18n from '../../utils/i18n/i18n.js';
+import i18n from '../../utils/i18n/i18n';
 
 import {
   DatesDropDownOptionsCustomRange,
@@ -26,7 +26,7 @@ import {
   DatePickerLabelFrom,
   DatePickerLabelTo,
   DatePickerPlaceholderAllDates
-} from '../VerticalFilterBarConstants.js';
+} from '../VerticalFilterBarConstants';
 
 class DateFilterControl extends FilterControl{
 
