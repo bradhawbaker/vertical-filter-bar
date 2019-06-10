@@ -7,6 +7,11 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      },
+      {
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
           {
