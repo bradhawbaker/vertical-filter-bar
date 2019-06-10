@@ -1,6 +1,6 @@
 {
   "name": "vertical-filter-bar",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "/dist/vertical-filter-bar.bundle.js",
   "author": "",
@@ -75,7 +75,7 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "moment": "^2.13.0",
-    "react-bootstrap": "^0.31.2",
+    "react-bootstrap": "^0.32.4",
     "react-datepicker": "^1.7.0",
     "react-select": "^1.2.1",
     "velocity-react": "^1.4.1"
