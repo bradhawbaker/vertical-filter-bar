@@ -1,6 +1,4 @@
-import React from 'react';
+import React from "react";
 
-class FilterControl extends React.Component{
-    
-}
+class FilterControl extends React.Component {}
 export default FilterControl;
