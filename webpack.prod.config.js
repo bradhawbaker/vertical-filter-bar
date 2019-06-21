@@ -36,7 +36,7 @@ module.exports = merge(core, {
     ]
   },
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserJSPlugin({sourceMap: true}), new OptimizeCSSAssetsPlugin({})],
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
