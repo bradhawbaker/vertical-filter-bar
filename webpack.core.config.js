@@ -1,8 +1,7 @@
 // Core/base webpack config (to be combined with prod or dev config
+const CircularDependencyPlugin = require('circular-dependency-plugin')
+
 module.exports = {
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
-  },
   module: {
     rules: [
       {
@@ -38,5 +37,18 @@ module.exports = {
         exclude: /node_modules/,
       }
     ]
+  },
+  plugins: [
+    new CircularDependencyPlugin({
+      // exclude detection of files based on a RegExp
+      exclude: /a\.js|node_modules/,
+      // add errors to webpack instead of warnings
+      failOnError: true,
+      // set the current working directory for displaying module paths
+      cwd: process.cwd(),
+    })
+  ],
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
   }
 };

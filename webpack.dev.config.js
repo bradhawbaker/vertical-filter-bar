@@ -5,29 +5,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const core = require('./webpack.core.config');
 
-// debugging circular dependencies
-const CircularDependencyPlugin = require('circular-dependency-plugin')
-
 module.exports = merge(core, {
-  devtool: 'source-map',
+  mode: "development",
+  devtool: 'eval-source-map',
   entry: {
-    'vertical-filter-bar' : [
-      path.join(__dirname, './dev/src', '/index.js')
-    ]
+    'vertical-filter-bar' : './dev/src/index.js'
   },
   output: {
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
       {
         test: /\.(css|sass|scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: [
+          "style-loader", //3. Inject styles into DOM
+          "css-loader", //2. Turns css into commonjs
+          "sass-loader" //1. Turns sass into css
+        ]
       }
     ]
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     // use HtmlWebpackPlugin to auto generate the index.html file
@@ -37,15 +35,7 @@ module.exports = merge(core, {
       template: './index_template.html',
       filename: 'index.html'
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new CircularDependencyPlugin({
-      // exclude detection of files based on a RegExp
-      exclude: /a\.js|node_modules/,
-      // add errors to webpack instead of warnings
-      failOnError: true,
-      // set the current working directory for displaying module paths
-      cwd: process.cwd(),
-    })
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     // Silence WebpackDevServer's own logs since they're generally not useful.
