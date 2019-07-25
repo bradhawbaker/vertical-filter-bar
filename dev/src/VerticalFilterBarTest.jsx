@@ -6,6 +6,15 @@ import VerticalFilterBar from '../../verticalFilterBar/VerticalFilterBar.jsx';
 const FILTER_TITLE = 'FILTER BY';
 const dataIntegrityFilterConfiguration = {
   filters: {
+    customer:{ // textbox customer filter
+      label:'Customer',
+      controls:{
+        customerBox:{
+          type:'textBox',
+          watermark: 'Type Customer Name'
+        }
+      }
+    },
     severity:{ // Severity Filter
       label:'Severity',
       controls:{
