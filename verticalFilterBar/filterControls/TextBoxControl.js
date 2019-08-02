@@ -21,10 +21,11 @@ export default class TextBoxControl extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
-      (!isEqual(this.state.filterText, nextProps.currentCriterion.values))) {
-        this.handleTextChange(nextProps.currentCriterion.values);
+  componentDidUpdate() {
+    let {currentCriterion} = this.props;
+    if (currentCriterion && currentCriterion.values &&
+      (!isEqual(this.state.filterText, currentCriterion.values))) {
+        this.handleTextChange(currentCriterion.values);
     }
   }
 
