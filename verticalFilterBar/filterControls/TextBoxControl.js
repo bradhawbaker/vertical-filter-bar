@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 
 
@@ -14,13 +16,30 @@ export default class TextBoxControl extends Component {
   }
 
   componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
+    if (this.props.currentCriterion && this.props.currentCriterion.values) {
+      this.handleTextChange(this.props.currentCriterion.values);
+    }
   }
 
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+      (!isEqual(this.state.filterText, nextProps.currentCriterion.values))) {
+        this.handleTextChange(nextProps.currentCriterion.values);
+    }
   }
 
+  handleTextChange(value){
+    let selectedValues = {};
+    if (!isEmpty(value)){
+      selectedValues.values = value;
+      this.setState({filterText: value});
+    } else {
+      this.setState({filterText: ""});
+    }
+
+
+    this.props.onFilterControlChange(selectedValues, this.props.controlId);
+  }
 
   handleChange(e) {
     this.setState({
@@ -29,23 +48,17 @@ export default class TextBoxControl extends Component {
   }
 
   handleFilterClick() {
-    let toFilter = {value: this.state.filterText};
+    let toFilter = {values: this.state.filterText};
     this.props.onFilterControlChange(toFilter, this.props.controlId );
   }
 
-  handleClick = (e) => {
-    if(this.box.contains(e.target)) {
-      return;
-    }
-    this.handleFilterClick();
-  }
 
   render() {
     let {watermark} = this.props.config;
     let {filterText} = this.state;
 
     return (
-      <span ref={box =>this.box = box}>
+
         <input type="text" className="textbox-filter"
                placeholder={watermark}
                value={filterText}
@@ -57,7 +70,6 @@ export default class TextBoxControl extends Component {
 
         />
 
-      </span>
     );
   }
 }
@@ -65,5 +77,6 @@ export default class TextBoxControl extends Component {
 TextBoxControl.propTypes = {
   config: PropTypes.object,
   onFilterControlChange: PropTypes.func,
-  controlId: PropTypes.string
+  controlId: PropTypes.string,
+  currentCriterion: PropTypes.obj
 };
