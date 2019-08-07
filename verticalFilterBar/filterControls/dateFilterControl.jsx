@@ -43,7 +43,7 @@ class DateFilterControl extends FilterControl{
     }
   }
 
-  componentWillReceiveProps() {
+  componentDidUpdate() {
     let {currentCriterion} = this.props;
     if (currentCriterion && currentCriterion.values &&
       (!this.state.currentCriterion ||
