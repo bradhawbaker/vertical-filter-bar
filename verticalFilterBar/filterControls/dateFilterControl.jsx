@@ -43,21 +43,22 @@ class DateFilterControl extends FilterControl{
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+  componentWillReceiveProps() {
+    let {currentCriterion} = this.props;
+    if (currentCriterion && currentCriterion.values &&
       (!this.state.currentCriterion ||
-      (nextProps.currentCriterion.values.code && (!this.state.currentCriterion.values ||
-      !isEqual(this.state.currentCriterion.values.code, nextProps.currentCriterion.values.code)) ||
-      (!isEmpty(this.state.currentCriterion.values) && isEmpty(nextProps.currentCriterion.values)) ||
-      (!isEmpty(nextProps.currentCriterion.values) && isEmpty(this.state.currentCriterion.values))))) {
-      this.onSelect(nextProps.currentCriterion.values);
-    } else if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
-      nextProps.currentCriterion.values.code === 'custom_range' &&
-      ((nextProps.currentCriterion.values.to && (!this.state.currentCriterion.values ||
-      !isEqual(this.state.currentCriterion.values.to, nextProps.currentCriterion.values.to))) ||
-      (nextProps.currentCriterion.values.from && (!this.state.currentCriterion.values ||
-      !isEqual(this.state.currentCriterion.values.from, nextProps.currentCriterion.values.from))))) {
-      this.onSelect(nextProps.currentCriterion.values);
+      (currentCriterion.values.code && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.code, currentCriterion.values.code)) ||
+      (!isEmpty(this.state.currentCriterion.values) && isEmpty(currentCriterion.values)) ||
+      (!isEmpty(currentCriterion.values) && isEmpty(this.state.currentCriterion.values))))) {
+      this.onSelect(currentCriterion.values);
+    } else if (currentCriterion && currentCriterion.values &&
+      currentCriterion.values.code === 'custom_range' &&
+      ((currentCriterion.values.to && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.to, currentCriterion.values.to))) ||
+      (currentCriterion.values.from && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.from, currentCriterion.values.from))))) {
+      this.onSelect(currentCriterion.values);
     }
   }
 
