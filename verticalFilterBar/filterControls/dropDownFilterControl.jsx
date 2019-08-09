@@ -21,13 +21,15 @@ class DropDownFilterControl extends FilterControl{
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentCriterion && nextProps.currentCriterion.values &&
+  componentDidUpdate() {
+    let {currentCriterion} = this.props;
+
+    if (currentCriterion && currentCriterion &&
       (!this.state.currentCriterion ||
-      (nextProps.currentCriterion.values.code && (!this.state.currentCriterion.values ||
-      !isEqual(this.state.currentCriterion.values.code, nextProps.currentCriterion.values.code)) ||
-      !isEqual(nextProps.currentCriterion.values, this.state.currentCriterion.values)))) {
-      this.handleChange(nextProps.currentCriterion.values);
+      (currentCriterion.values.code && (!this.state.currentCriterion.values ||
+      !isEqual(this.state.currentCriterion.values.code, currentCriterion.values.code)) ||
+      !isEqual(currentCriterion.values, this.state.currentCriterion.values)))) {
+      this.handleChange(currentCriterion.values);
     }
   }
 
