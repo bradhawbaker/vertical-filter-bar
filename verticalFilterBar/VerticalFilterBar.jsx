@@ -9,7 +9,8 @@ import '../resources/_verticalFilterBar.scss';
 
 import {
   FILTER_BAR_CLEAR_ALL,
-  FILTER_BAR_CLEAR_ALL_TOOL_TIP
+  FILTER_BAR_CLEAR_ALL_TOOL_TIP,
+  NO_FILTER_MESSAGE
 } from './VerticalFilterBarConstants';
 
 class VerticalFilterBar extends React.Component{
@@ -28,7 +29,8 @@ class VerticalFilterBar extends React.Component{
       filtersConfig: PropTypes.any,
       filtersOrder: PropTypes.any,
       data:  PropTypes.any,
-      onFilterChange: PropTypes.func
+      onFilterChange: PropTypes.func,
+      noFilterMessage:PropTypes.string
     };
   }
   onFilterChange(filtersValues, filterId){
@@ -76,13 +78,9 @@ class VerticalFilterBar extends React.Component{
     }
   }
 
-  render(){
-    return (
-      <div className='vfb-filters'>
-        <div className='vfb-header'>{this.props.filterTitle}
-          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
-               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
-        </div>
+  loadFilterGroup(){
+    if(!isEmpty(this.props.filtersConfig)) {
+      return (
         <FilterGroup
           ref={(filters) => this.filters = filters}
           data={this.props.data}
@@ -91,6 +89,24 @@ class VerticalFilterBar extends React.Component{
           filtersValues={this.state.filterValues}
           onFilterChange={this.onFilterChange.bind(this)}
         />
+      )
+    } else {
+      let {noFilterMessage} = this.props;
+      return (
+        <div className="vfb-nofilterMessage"> {noFilterMessage?noFilterMessage:NO_FILTER_MESSAGE} </div>
+      )
+    }
+
+  }
+
+  render(){
+    return (
+      <div className='vfb-filters'>
+        <div className='vfb-header'>{this.props.filterTitle}
+          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
+               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
+        </div>
+        {this.loadFilterGroup()}
       </div>
     );
   }
