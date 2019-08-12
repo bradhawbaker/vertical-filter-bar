@@ -9,8 +9,7 @@ import '../resources/_verticalFilterBar.scss';
 
 import {
   FILTER_BAR_CLEAR_ALL,
-  FILTER_BAR_CLEAR_ALL_TOOL_TIP,
-  NO_FILTER_MESSAGE
+  FILTER_BAR_CLEAR_ALL_TOOL_TIP
 } from './VerticalFilterBarConstants';
 
 class VerticalFilterBar extends React.Component{
@@ -22,17 +21,7 @@ class VerticalFilterBar extends React.Component{
     };
   }
 
-  static get propTypes() {
-    return {
-      filterValues: PropTypes.any,
-      filterTitle: PropTypes.any,
-      filtersConfig: PropTypes.any,
-      filtersOrder: PropTypes.any,
-      data:  PropTypes.any,
-      onFilterChange: PropTypes.func,
-      noFilterMessage:PropTypes.string
-    };
-  }
+
   onFilterChange(filtersValues, filterId){
     this.setState(() => {
       return {filterValues: filtersValues};
@@ -93,7 +82,7 @@ class VerticalFilterBar extends React.Component{
     } else {
       let {noFilterMessage} = this.props;
       return (
-        <div className="vfb-nofilterMessage"> {noFilterMessage?noFilterMessage:NO_FILTER_MESSAGE} </div>
+        <div className="vfb-nofilterMessage"> {noFilterMessage} </div>
       )
     }
 
@@ -112,3 +101,16 @@ class VerticalFilterBar extends React.Component{
   }
 }
 export default VerticalFilterBar;
+VerticalFilterBar.propTypes = {
+  filterValues: PropTypes.any,
+    filterTitle: PropTypes.any,
+    filtersConfig: PropTypes.any,
+    filtersOrder: PropTypes.any,
+    data:  PropTypes.any,
+    onFilterChange: PropTypes.func,
+    noFilterMessage:PropTypes.string
+}
+
+VerticalFilterBar.defaultProps = {
+  noFilterMessage: "No Filter Available"
+};

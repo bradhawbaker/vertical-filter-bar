@@ -24,4 +24,3 @@ export const DatesDropDownOptionsNext5Days = "Next 5 days";
 export const DatePickerPlaceholderAllDates = "All Dates";
 export const DatePickerLabelFrom = "From";
 export const DatePickerLabelTo = "To";
-export const NO_FILTER_MESSAGE = "No Filter Available";
