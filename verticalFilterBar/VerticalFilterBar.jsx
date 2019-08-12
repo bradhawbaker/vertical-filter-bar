@@ -21,16 +21,7 @@ class VerticalFilterBar extends React.Component{
     };
   }
 
-  static get propTypes() {
-    return {
-      filterValues: PropTypes.any,
-      filterTitle: PropTypes.any,
-      filtersConfig: PropTypes.any,
-      filtersOrder: PropTypes.any,
-      data:  PropTypes.any,
-      onFilterChange: PropTypes.func
-    };
-  }
+
   onFilterChange(filtersValues, filterId){
     this.setState(() => {
       return {filterValues: filtersValues};
@@ -76,13 +67,9 @@ class VerticalFilterBar extends React.Component{
     }
   }
 
-  render(){
-    return (
-      <div className='vfb-filters'>
-        <div className='vfb-header'>{this.props.filterTitle}
-          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
-               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
-        </div>
+  loadFilterGroup(){
+    if(!isEmpty(this.props.filtersConfig)) {
+      return (
         <FilterGroup
           ref={(filters) => this.filters = filters}
           data={this.props.data}
@@ -91,8 +78,39 @@ class VerticalFilterBar extends React.Component{
           filtersValues={this.state.filterValues}
           onFilterChange={this.onFilterChange.bind(this)}
         />
+      )
+    } else {
+      let {noFilterMessage} = this.props;
+      return (
+        <div className="vfb-nofilterMessage"> {noFilterMessage} </div>
+      )
+    }
+
+  }
+
+  render(){
+    return (
+      <div className='vfb-filters'>
+        <div className='vfb-header'>{this.props.filterTitle}
+          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
+               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
+        </div>
+        {this.loadFilterGroup()}
       </div>
     );
   }
 }
 export default VerticalFilterBar;
+VerticalFilterBar.propTypes = {
+  filterValues: PropTypes.any,
+    filterTitle: PropTypes.any,
+    filtersConfig: PropTypes.any,
+    filtersOrder: PropTypes.any,
+    data:  PropTypes.any,
+    onFilterChange: PropTypes.func,
+    noFilterMessage:PropTypes.string
+}
+
+VerticalFilterBar.defaultProps = {
+  noFilterMessage: "No Filter Available"
+};
