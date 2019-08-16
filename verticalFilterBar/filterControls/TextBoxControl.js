@@ -49,7 +49,10 @@ export default class TextBoxControl extends Component {
   }
 
   handleFilterClick() {
-    let toFilter = {values: this.state.filterText};
+    let toFilter={};
+    if(!isEmpty(this.state.filterText)) {
+      toFilter = {values: this.state.filterText};
+    }
     this.props.onFilterControlChange(toFilter, this.props.controlId );
   }
 
