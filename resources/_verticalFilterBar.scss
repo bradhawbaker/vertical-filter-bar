@@ -7,17 +7,17 @@ $font-family-semibold: 'Segoe UI Semibold';
 $res-folder: 'icons';
 
 
-.vfb-filters {
+.vfbFilters {
   font-family: $font-family-semibold;
   background-color: $background-color;
   box-shadow: 2px 0px 1.98px 0.02px rgba(0, 0, 0, 0.09);
 
-  .filter-group {
+  .filterGroup {
     width: 100%;
   }
 }
 
-.vfb-header {
+.vfbHeader {
   @extend .clearfix;
   background-color: $main-color;
   height: 30px;
@@ -26,7 +26,7 @@ $res-folder: 'icons';
   color: #ffffff;
   padding-left: 8px;
 
-  .clear-all{
+  .clearAll{
     font-size: 14px;
     margin-right: 8px;
     float:right;
@@ -68,7 +68,7 @@ $res-folder: 'icons';
   }
 }
 
-.filter-header {
+.filterHeader {
   height:50px;
   line-height:50px;
   cursor: pointer;
@@ -106,17 +106,17 @@ $res-folder: 'icons';
   }
 }
 
-.filter-group::-webkit-scrollbar {
+.filterGroup::-webkit-scrollbar {
   width: 5px;
 }
 
-.filter-group::-webkit-scrollbar-thumb {
+.filterGroup::-webkit-scrollbar-thumb {
   width: 5px;
   border-radius: 10px;
   background-color: $border-color;
 }
 
-.filter-control {
+.filterControl {
   margin-bottom: 20px;
 
   .label{
@@ -131,10 +131,10 @@ $res-folder: 'icons';
   display: none !important;
 }
 
-.dropdown-filter-control {
-  @extend .filter-control;
+.dropdownFilterControl {
+  @extend .filterControl;
 
-  .dropdown-select {
+  .dropdownSelect {
     width: 100%;
     font-family: $font-family-semibold;
     font-size: 14px;
@@ -159,8 +159,8 @@ $res-folder: 'icons';
   }
 }
 
-.checkbox-filter-control {
-  //@extend .filter-control;
+.checkboxFilterControl {
+  //@extend .filterControl;
 
   &.statusCheckBox{
     -webkit-column-count: 2;  /* Chrome, Safari, Opera */
@@ -213,7 +213,7 @@ $res-folder: 'icons';
   }
 }
 
-.filter-input{
+.filterInput{
   width: calc(100% - 22px);
   border: 1px solid $border-color;
   height: 30px;
@@ -235,17 +235,17 @@ $res-folder: 'icons';
   }
 }
 
-.date-picker-filter-control{
-  @extend .filter-control;
+.datePickerFilterControl{
+  @extend .filterControl;
   .react-datepicker__input-container{
     width:100%;
   }
   input{
-    @extend .filter-input;
+    @extend .filterInput;
   }
 }
 
-.date-dropdown {
+.dateDropdown {
   .Select-clear-zone {
     visibility: hidden;
   }
@@ -279,24 +279,25 @@ $res-folder: 'icons';
   color: #12798e;
 }
 
-.date-picker-filter-control input[value=""] {
+.datePickerFilterControl input[value=""] {
   background: #fff url($res-folder+'/calendar-icon.svg') no-repeat 97% center;
   background-size: 13px 14px;
   width: 100%;
 }
 
-.date-picker-filter-control input:not([value=""]) {
+.datePickerFilterControl input:not([value=""]) {
   background: #fff url($res-folder+'/calendar-icon-hover.svg') no-repeat 97% center;
   background-size: 13px 14px;
   width: 100%;
 }
 
 
-.textbox-filter {
+.textboxFilter {
   background-color: #fff;
   border-color: #d9d9d9 #ccc #b3b3b3;
   border-radius: 4px;
   border: 1px solid #ccc;
+  margin-bottom: 20px;
 
   cursor: default;
   display: table;
@@ -320,8 +321,7 @@ $res-folder: 'icons';
 ::placeholder { /* Firefox, Chrome, Opera */
   color: #aaa;
 }
-.vfb-nofilterMessage{
+.vfbNofilterMessage{
   margin: 10px;
-
 }
 

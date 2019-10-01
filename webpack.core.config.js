@@ -25,6 +25,21 @@ module.exports = {
         ]
       },
       {
+        test: /\.(css|sass|scss)$/,
+        use: [
+          'style-loader', 
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]"
+              }
+            }
+          },
+          'sass-loader'
+        ]
+      },
+      {
         test: /\.(jpe?g|png|gif|svg)$/,
         use: [
           {

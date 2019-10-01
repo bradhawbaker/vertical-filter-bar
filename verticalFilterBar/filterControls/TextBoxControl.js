@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-
+import vfbStyle from '../../resources/_verticalFilterBar.scss';
 
 export default class TextBoxControl extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export default class TextBoxControl extends Component {
 
     return (
 
-        <input type="text" className="textbox-filter"
+        <input type="text" className={vfbStyle.textboxFilter}
                placeholder={watermark}
                value={filterText}
                onChange={e => this.handleChange(e)}

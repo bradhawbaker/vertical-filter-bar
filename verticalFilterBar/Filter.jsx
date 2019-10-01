@@ -12,6 +12,8 @@ import {
   HIDE_FILTER
 } from './VerticalFilterBarConstants';
 
+import vfbStyle from '../resources/_verticalFilterBar.scss';
+
 class Filter extends React.Component{
 
 
@@ -207,17 +209,17 @@ class Filter extends React.Component{
 
     let label = i18n(this.props.filterControlsConfig.label);
     return(
-      <div onClick={this.onFilterHeaderClick.bind(this)}className='filter-header'>
-        <div className='title' title={label}>{label}
+      <div onClick={this.onFilterHeaderClick.bind(this)}className={vfbStyle.filterHeader}>
+        <div className={vfbStyle.title} title={label}>{label}
           {!this.areControlsWithValues(this.getFilterControlsValues()) || this.props.isDisabled ? '' :
-            <div className='iconClickArea' title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
+            <div className={vfbStyle.iconClickArea} title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
                  onClick={this.onFilterIconClick.bind(this)}>
-              <div className='icon'></div>
+              <div className={vfbStyle.icon}></div>
             </div>
           }
         </div>
         {this.props.isDisabled ? '' :
-          <div className='direction'
+          <div className={vfbStyle.direction}
                title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
         }
       </div>
@@ -226,16 +228,16 @@ class Filter extends React.Component{
 
   render(){
     let filterControls = this.createFilterControls();
-    let dopFilterClassName = 'filter ' + this.props.filterId;
-    dopFilterClassName = this.props.isDisabled ? (dopFilterClassName + ' disabled') : dopFilterClassName;
+    let dopFilterClassName = `${vfbStyle.filter} ${this.props.filterId}`;
+    dopFilterClassName = this.props.isDisabled ? `${dopFilterClassName} ${vfbStyle.disabled}` : dopFilterClassName;
     let isOpen = this.isOpen();
-    let filterDirectionClassName = isOpen ? 'expand' : 'collapse';
+    let filterDirectionClassName = isOpen ? vfbStyle.expand : vfbStyle.collapse;
     return (
-      <div className={dopFilterClassName + ' ' + filterDirectionClassName}>
+      <div className={`${dopFilterClassName} ${filterDirectionClassName}`}>
         {this.createFilterHeader()}
         <VelocityTransitionGroup component='div' enter='slideDown' leave='slideUp'>
-          {isOpen ? <div className='controls'>{filterControls}</div> :
-            <div className='hiddenFilter'>{filterControls}</div> }
+          {isOpen ? <div className={vfbStyle.controls}>{filterControls}</div> :
+            <div className={vfbStyle.hiddenFilter}>{filterControls}</div> }
         </VelocityTransitionGroup>
       </div>
     );

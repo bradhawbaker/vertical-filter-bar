@@ -4,8 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
 import i18n from '../utils/i18n/i18n';
 import FilterGroup from './FilterGroup.jsx';
-import '../resources/_react-select.css';
-import '../resources/_verticalFilterBar.scss';
+// import '../resources/_react-select.css';
+import vfbStyle from '../resources/_verticalFilterBar.scss';
 
 import {
   FILTER_BAR_CLEAR_ALL,
@@ -82,7 +82,7 @@ class VerticalFilterBar extends React.Component{
     } else {
       let {noFilterMessage} = this.props;
       return (
-        <div className="vfb-nofilterMessage"> {noFilterMessage} </div>
+        <div className={vfbStyle.vfbNofilterMessage}> {noFilterMessage} </div>
       )
     }
 
@@ -90,9 +90,9 @@ class VerticalFilterBar extends React.Component{
 
   render(){
     return (
-      <div className='vfb-filters'>
-        <div className='vfb-header'>{this.props.filterTitle}
-          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
+      <div className={vfbStyle.vfbFilters}>
+        <div className={vfbStyle.vfbHeader}>{this.props.filterTitle}
+          <div className={vfbStyle.clearAll} title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
                onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
         </div>
         {this.loadFilterGroup()}

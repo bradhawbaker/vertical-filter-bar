@@ -24,17 +24,6 @@ module.exports = merge(core, {
     "react-dom"
   ],
   mode: 'production',
-  module: {
-    rules: [
-      {
-        test: /\.(css|sass|scss)$/,
-        use: [
-
-           'style-loader', 'css-loader','sass-loader'
-        ]
-      }
-    ]
-  },
   optimization: {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },

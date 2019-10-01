@@ -1,4 +1,5 @@
 .idea
+.history
 dist
 node_modules
 package

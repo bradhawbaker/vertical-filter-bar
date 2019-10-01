@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
 import Filter from './Filter.jsx';
 
+import vfbStyle from '../resources/_verticalFilterBar.scss';
 
 class FilterGroup extends React.Component{
 
@@ -114,7 +115,7 @@ class FilterGroup extends React.Component{
         );
       });
       return(
-        <div className='filter-group'>
+        <div className={vfbStyle.filterGroup}>
           {filters}
           {this.props.children}
         </div>

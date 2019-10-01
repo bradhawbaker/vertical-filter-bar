@@ -6,6 +6,8 @@ import Select from 'react-select';
 import FilterControl from './filterControl';
 import i18n from '../../utils/i18n/i18n';
 
+import vfbStyle from '../../resources/_verticalFilterBar.scss';
+
 class DropDownFilterControl extends FilterControl{
 
   constructor(props) {
@@ -83,10 +85,10 @@ class DropDownFilterControl extends FilterControl{
     }
 
     let searchable = (typeof this.props.config.searchable === 'undefined') ? true : this.props.config.searchable;
-    let className = 'dropdown-filter-control ' + this.props.controlId;
+    let className = `${vfbStyle.dropdownFilterControl} ${this.props.controlId}`;
     return (
       <div className={className} >
-        <div className='label'>{i18n(this.props.config.label)}</div>
+        <div className={vfbStyle.label}>{i18n(this.props.config.label)}</div>
         <Select
           multi={multiSelect}
           placeholder = {i18n(this.props.config.watermark)}

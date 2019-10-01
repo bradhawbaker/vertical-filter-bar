@@ -9,6 +9,8 @@ import FilterControl from './filterControl';
 import 'react-datepicker/dist/react-datepicker.css';
 import i18n from '../../utils/i18n/i18n';
 
+import vfbStyle from '../../resources/_verticalFilterBar.scss';
+
 import {
   DatesDropDownOptionsCustomRange,
   DatesDropDownOptionsLast,
@@ -130,9 +132,9 @@ class DateFilterControl extends FilterControl{
     let dropdownValue = !isEmpty(this.state.currentCriterion) ? this.state.currentCriterion.values.code : null;
 
     return (
-      <div className='dropdown-filter-control' >
+      <div className={vfbStyle.dropdownFilterControl} >
         <Select
-          className = 'dropdown-select date-dropdown'
+          className = {`${vfbStyle.dropdownSelect} ${vfbStyle.dateDropdown}`}
           multi={multiSelect}
           placeholder = {i18n(this.props.config.watermark)}
           value={dropdownValue}
@@ -157,7 +159,7 @@ class DateFilterControl extends FilterControl{
       if (currentValue.code === 'custom_range'){
         let startDate = moment(currentValue.from).isValid() ? moment(currentValue.from) : currentValue.from;
         let endDate = moment(currentValue.to).isValid() ? moment(currentValue.to) : currentValue.to;
-        let className = 'date-picker-filter-control ' + this.props.controlId;
+        let className = `${vfbStyle.datePickerFilterControl} ${this.props.controlId}`;
         let dateFormat = 'YYYY-MM-DD';
 
         if (this.props.config.format) {
