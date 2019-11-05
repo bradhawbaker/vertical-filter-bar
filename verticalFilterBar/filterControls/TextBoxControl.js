@@ -30,15 +30,22 @@ export default class TextBoxControl extends Component {
     }
   }
 
-  handleTextChange(currentCriterion){
-    let value = currentCriterion.values;
-    if (!isEmpty(value)){
-      this.setState({filterText: value,
-        currentCriterion: currentCriterion }
-        );
+  handleTextChange(currentCriterion) {
+    const value = currentCriterion.values;
+    const {controlId} = this.props;
+    if (!isEmpty(value)) {
+      this.setState({
+          filterText: value,
+          currentCriterion: currentCriterion
+        }
+      );
+      this.props.onFilterControlChange({values: value}, controlId);
     } else {
-      this.setState({filterText: "",
-        currentCriterion: currentCriterion});
+      this.setState({
+        filterText: "",
+        currentCriterion: currentCriterion
+      });
+      this.props.onFilterControlChange({}, controlId);
     }
   }
 
@@ -58,8 +65,8 @@ export default class TextBoxControl extends Component {
 
 
   render() {
-    let {watermark} = this.props.config;
-    let {filterText} = this.state;
+    const {watermark} = this.props.config;
+    const {filterText} = this.state;
 
     return (
 
