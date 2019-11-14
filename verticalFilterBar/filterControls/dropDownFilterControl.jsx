@@ -6,6 +6,8 @@ import Select from 'react-select';
 import FilterControl from './filterControl';
 import i18n from '../../utils/i18n/i18n';
 
+import '../../external/_react-select.css'
+
 class DropDownFilterControl extends FilterControl{
 
   constructor(props) {
@@ -75,6 +77,7 @@ class DropDownFilterControl extends FilterControl{
   }
 
   render(){
+    const {theme} = this.props;
     let multiSelect = ( this.props.config.multiSelect === true) ;
     let dropdownValue = this.getSelectValues();
 
@@ -83,10 +86,10 @@ class DropDownFilterControl extends FilterControl{
     }
 
     let searchable = (typeof this.props.config.searchable === 'undefined') ? true : this.props.config.searchable;
-    let className = 'dropdown-filter-control ' + this.props.controlId;
+    let className = `${theme.dropdownFilterControl} ${this.props.controlId}`;
     return (
       <div className={className} >
-        <div className='label'>{i18n(this.props.config.label)}</div>
+        <div className={theme.label}>{i18n(this.props.config.label)}</div>
         <Select
           multi={multiSelect}
           placeholder = {i18n(this.props.config.watermark)}

@@ -3,6 +3,9 @@ import isEmpty from 'lodash/isEmpty';
 
 import VerticalFilterBar from '../../verticalFilterBar/VerticalFilterBar.jsx';
 
+import styles from "./_verticalFilterBarTest.scss";
+import theme from "../TestTheme.scss";
+
 const FILTER_TITLE = 'FILTER BY';
 const dataIntegrityFilterConfiguration = {
   filters: {
@@ -157,19 +160,25 @@ export default class VerticalFilterBarTest extends Component {
 
   render() {
     let selectedValues = JSON.stringify(this.state.filterValues);
+    let themeProps = {
+      prefix: "vfb-",
+      compose: "merge"
+    };
 
     return (
       <div>
         <h1>Vertical Filter Bar Test</h1>
-        <div className='filter-bar-div'>
+        <div className={styles.filterBarDiv}>
           <VerticalFilterBar
             filtersConfig={dataIntegrityFilterConfiguration.filters}
             filterValues={this.state.filterValues}
             onFilterChange={this.onFilter}
             filterTitle={FILTER_TITLE}
+            theme={theme}
+            themeProps={themeProps}
           />
         </div>
-        <div className='filter-results-div'>
+        <div className={styles.filterResultsDiv}>
           <div className='clear-all' title='REST'
                onClick={this.onClearAll.bind(this)}>Click HERE to reset filters to defaults</div>
           <h2>Selected Filters</h2>

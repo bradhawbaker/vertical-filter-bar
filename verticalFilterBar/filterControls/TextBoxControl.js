@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-
-
 export default class TextBoxControl extends Component {
   constructor(props) {
     super(props);
@@ -65,12 +63,13 @@ export default class TextBoxControl extends Component {
 
 
   render() {
+    const {theme} = this.props;
     const {watermark} = this.props.config;
     const {filterText} = this.state;
 
     return (
 
-        <input type="text" className="textbox-filter"
+        <input type="text" className={theme.textboxFilter}
                placeholder={watermark}
                value={filterText}
                onChange={e => this.handleChange(e)}
@@ -89,5 +88,6 @@ TextBoxControl.propTypes = {
   config: PropTypes.object,
   onFilterControlChange: PropTypes.func,
   controlId: PropTypes.string,
-  currentCriterion: PropTypes.obj
+  currentCriterion: PropTypes.obj,
+  theme: PropTypes.object
 };

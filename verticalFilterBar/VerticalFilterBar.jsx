@@ -1,11 +1,14 @@
 import React from 'react';
+import { composeThemeFromProps } from '@css-modules-theme/react';
+
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
 import i18n from '../utils/i18n/i18n';
 import FilterGroup from './FilterGroup.jsx';
-import '../resources/_react-select.css';
-import '../resources/_verticalFilterBar.scss';
+import vfbStyle from '../resources/_verticalFilterBar.scss';
+
+import buildThemingProps from '../utils/ThemeUtils';
 
 import {
   FILTER_BAR_CLEAR_ALL,
@@ -67,7 +70,7 @@ class VerticalFilterBar extends React.Component{
     }
   }
 
-  loadFilterGroup(){
+  loadFilterGroup(theme){
     if(!isEmpty(this.props.filtersConfig)) {
       return (
         <FilterGroup
@@ -77,25 +80,30 @@ class VerticalFilterBar extends React.Component{
           filtersConfig={this.props.filtersConfig}
           filtersValues={this.state.filterValues}
           onFilterChange={this.onFilterChange.bind(this)}
+          theme={theme}
         />
       )
     } else {
       let {noFilterMessage} = this.props;
       return (
-        <div className="vfb-nofilterMessage"> {noFilterMessage} </div>
+        <div className={theme.vfbNofilterMessage}> {noFilterMessage} </div>
       )
     }
 
   }
 
   render(){
+    const { theme, themeProps } = this.props;
+    const themingProperties = buildThemingProps(theme, themeProps);
+    const composedTheme = composeThemeFromProps(vfbStyle, themingProperties, { compose: 'merge', });
+
     return (
-      <div className='vfb-filters'>
-        <div className='vfb-header'>{this.props.filterTitle}
-          <div className='clear-all' title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
+      <div className={composedTheme.vfbFilters}>
+        <div className={composedTheme.vfbHeader}>{this.props.filterTitle}
+          <div className={composedTheme.clearAll} title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
                onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
         </div>
-        {this.loadFilterGroup()}
+        {this.loadFilterGroup(composedTheme)}
       </div>
     );
   }
@@ -103,14 +111,24 @@ class VerticalFilterBar extends React.Component{
 export default VerticalFilterBar;
 VerticalFilterBar.propTypes = {
   filterValues: PropTypes.any,
-    filterTitle: PropTypes.any,
-    filtersConfig: PropTypes.any,
-    filtersOrder: PropTypes.any,
-    data:  PropTypes.any,
-    onFilterChange: PropTypes.func,
-    noFilterMessage:PropTypes.string
+  filterTitle: PropTypes.any,
+  filtersConfig: PropTypes.any,
+  filtersOrder: PropTypes.any,
+  data:  PropTypes.any,
+  onFilterChange: PropTypes.func,
+  noFilterMessage:PropTypes.string,
+  theme: PropTypes.object,
+  themeProps: PropTypes.shape({
+    prefix: PropTypes.string,
+    compose: PropTypes.string
+  })
 }
 
 VerticalFilterBar.defaultProps = {
-  noFilterMessage: "No Filter Available"
+  noFilterMessage: "No Filter Available",
+  theme: {},
+  themeProps: {
+    prefix: "vfb=",
+    compose: "merge"
+  }
 };

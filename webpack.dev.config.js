@@ -18,14 +18,6 @@ module.exports = merge(core, {
   output: {
     filename: '[name].bundle.js'
   },
-  module: {
-    rules: [
-      {
-        test: /\.(css|sass|scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      }
-    ]
-  },
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },

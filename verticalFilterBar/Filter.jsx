@@ -31,6 +31,7 @@ class Filter extends React.Component{
       filterId: PropTypes.any,
       data:PropTypes.any,
       isDisabled: PropTypes.any,
+      theme: PropTypes.object
     };
   }
 
@@ -173,6 +174,7 @@ class Filter extends React.Component{
   }
 
   createFilterControls(){
+    const {theme} = this.props;
     let filtersConfig = this.props.filterControlsConfig;
     let filterControlsIds = Object.keys(filtersConfig.controls);
     let filterControls = [];
@@ -192,6 +194,7 @@ class Filter extends React.Component{
             data={this.props.data}
             config={config}
             dynamicOptions={dynamicOptions}
+            theme={theme}
           />
         );
       }
@@ -200,6 +203,7 @@ class Filter extends React.Component{
   }
 
   createFilterHeader(){
+    const {theme} = this.props;
     let hideHeader = this.props.filterControlsConfig.hideHeader;
     if(hideHeader === true){
       return null;
@@ -207,17 +211,17 @@ class Filter extends React.Component{
 
     let label = i18n(this.props.filterControlsConfig.label);
     return(
-      <div onClick={this.onFilterHeaderClick.bind(this)}className='filter-header'>
-        <div className='title' title={label}>{label}
+      <div onClick={this.onFilterHeaderClick.bind(this)}className={theme.filterHeader}>
+        <div className={theme.title} title={label}>{label}
           {!this.areControlsWithValues(this.getFilterControlsValues()) || this.props.isDisabled ? '' :
-            <div className='iconClickArea' title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
+            <div className={theme.iconClickArea} title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
                  onClick={this.onFilterIconClick.bind(this)}>
-              <div className='icon'></div>
+              <div className={theme.icon}></div>
             </div>
           }
         </div>
         {this.props.isDisabled ? '' :
-          <div className='direction'
+          <div className={theme.direction}
                title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
         }
       </div>
@@ -225,17 +229,18 @@ class Filter extends React.Component{
   }
 
   render(){
+    const {theme} = this.props;
     let filterControls = this.createFilterControls();
-    let dopFilterClassName = 'filter ' + this.props.filterId;
-    dopFilterClassName = this.props.isDisabled ? (dopFilterClassName + ' disabled') : dopFilterClassName;
+    let dopFilterClassName = `${theme.filter} ${this.props.filterId}`;
+    dopFilterClassName = this.props.isDisabled ? `${dopFilterClassName} ${theme.disabled}` : dopFilterClassName;
     let isOpen = this.isOpen();
-    let filterDirectionClassName = isOpen ? 'expand' : 'collapse';
+    let filterDirectionClassName = isOpen ? theme.expand : theme.collapse;
     return (
-      <div className={dopFilterClassName + ' ' + filterDirectionClassName}>
+      <div className={`${dopFilterClassName} ${filterDirectionClassName}`}>
         {this.createFilterHeader()}
         <VelocityTransitionGroup component='div' enter='slideDown' leave='slideUp'>
-          {isOpen ? <div className='controls'>{filterControls}</div> :
-            <div className='hiddenFilter'>{filterControls}</div> }
+          {isOpen ? <div className={theme.controls}>{filterControls}</div> :
+            <div className={theme.hiddenFilter}>{filterControls}</div> }
         </VelocityTransitionGroup>
       </div>
     );

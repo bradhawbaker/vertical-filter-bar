@@ -1,4 +1,6 @@
 // Core/base webpack config (to be combined with prod or dev config
+const path = require('path');
+
 module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx']
@@ -24,6 +26,27 @@ module.exports = {
           'eslint-loader'
         ]
       },
+      {
+        test: /\.(css|sass|scss)$/,
+        exclude:  [ path.join(__dirname, '/external'), path.join(__dirname, '/node_modules') ],
+        use: [
+          'style-loader', 
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]"
+              }
+            }
+          },
+          'sass-loader'
+        ]
+      },      
+      {
+        test: /\.(css)$/,
+        exclude:  [path.join(__dirname, '/resources')],
+        use: [ 'style-loader', "css-loader", 'sass-loader' ]
+      },      
       {
         test: /\.(jpe?g|png|gif|svg)$/,
         use: [
