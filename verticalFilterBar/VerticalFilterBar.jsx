@@ -128,7 +128,7 @@ VerticalFilterBar.defaultProps = {
   noFilterMessage: "No Filter Available",
   theme: {},
   themeProps: {
-    prefix: "vfb=",
+    prefix: "vfb-",
     compose: "merge"
   }
 };
