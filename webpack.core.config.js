@@ -1,4 +1,6 @@
 // Core/base webpack config (to be combined with prod or dev config
+const path = require('path');
+
 module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx']
@@ -26,6 +28,7 @@ module.exports = {
       },
       {
         test: /\.(css|sass|scss)$/,
+        exclude:  [ path.join(__dirname, '/external'), path.join(__dirname, '/node_modules') ],
         use: [
           'style-loader', 
           {
@@ -38,7 +41,12 @@ module.exports = {
           },
           'sass-loader'
         ]
-      },
+      },      
+      {
+        test: /\.(css)$/,
+        exclude:  [path.join(__dirname, '/resources')],
+        use: [ 'style-loader', "css-loader", 'sass-loader' ]
+      },      
       {
         test: /\.(jpe?g|png|gif|svg)$/,
         use: [

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="12" height="11" viewBox="0 0 12 11">
   <defs>
     <style>
-      .cls-1 {
+      .cls1 {
         fill: #01afd1;
         fill-rule: evenodd;
       }

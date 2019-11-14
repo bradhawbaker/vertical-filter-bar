@@ -141,19 +141,19 @@ $res-folder: 'icons';
     display: inline-block;
   }
 
-  .Select--multi .Select-value-label {
+  :global(.Select--multi .Select-value-label) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 270px;
   }
 
-  .Select-arrow-zone{
+  :global(.Select-arrow-zone) {
     vertical-align: top;
     padding-top: 6px;
   }
 
-  .Select-clear-zone{
+  :global(.Select-clear-zone) {
     vertical-align: bottom;
     padding-bottom: 8px;
   }

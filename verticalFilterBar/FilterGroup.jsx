@@ -4,8 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
 import Filter from './Filter.jsx';
 
-import vfbStyle from '../resources/_verticalFilterBar.scss';
-
 class FilterGroup extends React.Component{
 
   constructor(props) {
@@ -22,7 +20,8 @@ class FilterGroup extends React.Component{
       onFilterChange: PropTypes.func,
       filtersOrder: PropTypes.any,
       children: PropTypes.any,
-      data: PropTypes.any
+      data: PropTypes.any,
+      theme: PropTypes.object
     };
   }
   resetIsOpen(){
@@ -86,6 +85,8 @@ class FilterGroup extends React.Component{
   }
 
   render(){
+    const {theme} = this.props;
+
     if(!isEmpty(this.props.filtersConfig)){
       this.filtersComponents = [];
       let filtersIds = this.props.filtersOrder;
@@ -111,11 +112,12 @@ class FilterGroup extends React.Component{
             isDisabled={isDisabled}
             onFilterChange={this.onFilterChange.bind(this)}
             ref={(filterComponent)=> this.addFilterComponent(filterComponent)}
+            theme={theme}
           />
         );
       });
       return(
-        <div className={vfbStyle.filterGroup}>
+        <div className={theme.filterGroup}>
           {filters}
           {this.props.children}
         </div>

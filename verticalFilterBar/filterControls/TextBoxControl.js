@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
-import vfbStyle from '../../resources/_verticalFilterBar.scss';
-
 export default class TextBoxControl extends Component {
   constructor(props) {
     super(props);
@@ -58,12 +56,13 @@ export default class TextBoxControl extends Component {
 
 
   render() {
+    const {theme} = this.props;
     let {watermark} = this.props.config;
     let {filterText} = this.state;
 
     return (
 
-        <input type="text" className={vfbStyle.textboxFilter}
+        <input type="text" className={theme.textboxFilter}
                placeholder={watermark}
                value={filterText}
                onChange={e => this.handleChange(e)}
@@ -82,5 +81,6 @@ TextBoxControl.propTypes = {
   config: PropTypes.object,
   onFilterControlChange: PropTypes.func,
   controlId: PropTypes.string,
-  currentCriterion: PropTypes.obj
+  currentCriterion: PropTypes.obj,
+  theme: PropTypes.object
 };
