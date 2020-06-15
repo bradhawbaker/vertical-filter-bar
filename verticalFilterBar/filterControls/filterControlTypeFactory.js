@@ -1,6 +1,6 @@
 import DropDownControlFilter from "./dropDownFilterControl.jsx";
 import DateFilterControl from "./dateFilterControl.jsx";
-import TextBoxControl from "./TextBoxControl";
+import TextBoxControl from "./TextBoxControl.jsx";
 
 function getFilterControlType(controlFilterConfig) {
   var Type; // make sure this var starts with a capital letter

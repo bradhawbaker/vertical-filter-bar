@@ -88,6 +88,6 @@ TextBoxControl.propTypes = {
   config: PropTypes.object,
   onFilterControlChange: PropTypes.func,
   controlId: PropTypes.string,
-  currentCriterion: PropTypes.obj,
+  currentCriterion: PropTypes.object,
   theme: PropTypes.object
 };
