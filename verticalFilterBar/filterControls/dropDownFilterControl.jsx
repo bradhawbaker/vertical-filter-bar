@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import Select from 'react-select';
 import FilterControl from './filterControl';
-import i18n from '../../utils/i18n/i18n';
 
 import '../../external/_react-select.css'
 
@@ -78,7 +77,8 @@ class DropDownFilterControl extends FilterControl{
 
   render(){
     const {theme} = this.props;
-    let multiSelect = ( this.props.config.multiSelect === true) ;
+    let multiSelect = ( this.props.config.multiSelect === true);
+    const clearToolTip = this.props.config.clearToolTip;
     let dropdownValue = this.getSelectValues();
 
     if (!isEmpty(dropdownValue) && !multiSelect){
@@ -89,16 +89,18 @@ class DropDownFilterControl extends FilterControl{
     let className = `${theme.dropdownFilterControl} ${this.props.controlId}`;
     return (
       <div className={className} >
-        <div className={theme.label}>{i18n(this.props.config.label)}</div>
+        <div className={theme.label}>{this.props.config.label}</div>
         <Select
           multi={multiSelect}
-          placeholder = {i18n(this.props.config.watermark)}
+          placeholder = {this.props.config.watermark}
           value={dropdownValue}
           labelKey = 'decode'
           valueKey = 'code'
           searchable = {searchable}
           options = {this.getSelectOptions()}
           onChange = {this.handleChange.bind(this)}
+          clearAllText={clearToolTip}
+          clearValueText={clearToolTip}
         >
         </Select>
       </div>

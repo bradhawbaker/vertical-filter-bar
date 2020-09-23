@@ -7,10 +7,18 @@ import styles from "./_verticalFilterBarTest.scss";
 import theme from "../TestTheme.scss";
 
 const FILTER_TITLE = 'FILTER BY';
+const CLEAR_ALL_TEXT = 'CLEAR ALL'
+const CLEAR_ALL_TOOL_TIP = '"CLEAR ALL" HELP';
+const SHOW_TOOL_TIP = 'SHOW';
+const HIDE_TOOL_TIP = 'HIDE';
+const CLEAR_TOOL_TIP = 'CLEAR';
 const dataIntegrityFilterConfiguration = {
   filters: {
     customer:{ // textbox customer filter
       label:'Customer',
+      showToolTip: SHOW_TOOL_TIP,
+      hideToolTip: HIDE_TOOL_TIP,
+      clearToolTip: CLEAR_TOOL_TIP,
       controls:{
         customerBox:{
           type:'textBox',
@@ -31,8 +39,12 @@ const dataIntegrityFilterConfiguration = {
             {decode:'MAJOR',code:'MAJOR'},
             {decode:'MINOR',code:'MINOR'}
           ],
-        }
-      }
+          clearToolTip: CLEAR_TOOL_TIP,
+        },
+      },
+      showToolTip: SHOW_TOOL_TIP,
+      hideToolTip: HIDE_TOOL_TIP,
+      clearToolTip: CLEAR_TOOL_TIP,
     },
     category:{ // Category Filter
       label:'Category',
@@ -47,8 +59,12 @@ const dataIntegrityFilterConfiguration = {
             {decode:'MISSING_VALUE',code:'MISSING_VALUE'},
             {decode:'LINK_ERROR',code:'LINK_ERROR'}
           ],
-        }
-      }
+          clearToolTip: CLEAR_TOOL_TIP,
+        },
+      },
+      showToolTip: SHOW_TOOL_TIP,
+      hideToolTip: HIDE_TOOL_TIP,
+      clearToolTip: CLEAR_TOOL_TIP,
     },
     objectType:{  // Entity Type Filter
       label:'Object Type',
@@ -63,8 +79,12 @@ const dataIntegrityFilterConfiguration = {
             {decode:'customer',code:'customer'},
             {decode:'l3-network',code:'l3-network'}
           ],
+          clearToolTip: CLEAR_TOOL_TIP,
         }
-      }
+      },
+      showToolTip: SHOW_TOOL_TIP,
+      hideToolTip: HIDE_TOOL_TIP,
+      clearToolTip: CLEAR_TOOL_TIP,
     },
     dateRange:{  // Date Range Filter
       label:'Date Range',
@@ -83,8 +103,16 @@ const dataIntegrityFilterConfiguration = {
             {decode:'Since Last Year',code:'last_1_years'},
             {decode:'Custom Range',code:'custom_range'}
           ],
+          datePickerLabelFrom:"From",
+          datePickerLabelTo:"To",
+          datePickerPlaceholderAllDates:"All Dates",
+          clearToolTip: CLEAR_TOOL_TIP,
+          locale: 'es',
         }
-      }
+      },
+      showToolTip: SHOW_TOOL_TIP,
+      hideToolTip: HIDE_TOOL_TIP,
+      clearToolTip: CLEAR_TOOL_TIP,
     }
   }
 };
@@ -174,6 +202,8 @@ export default class VerticalFilterBarTest extends Component {
             filterValues={this.state.filterValues}
             onFilterChange={this.onFilter}
             filterTitle={FILTER_TITLE}
+            clearAllToolTip={CLEAR_ALL_TOOL_TIP}
+            clearAllText={CLEAR_ALL_TEXT}
             theme={theme}
             themeProps={themeProps}
           />

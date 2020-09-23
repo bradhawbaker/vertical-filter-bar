@@ -28,6 +28,8 @@ filterValueChange(newFilterValue) {
             filterValues={this.state.filterValues}
             onFilterChange={this.onFilter}
             filterTitle={FILTER_TITLE}
+            clearAllText={CLEAR_ALL_TEXT}
+            clearAllToolTip={CLEAR_ALL_TOOL_TIP}
           />
 ```
 
