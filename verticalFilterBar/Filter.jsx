@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import isUndefined from 'lodash/isUndefined';
-import i18n from '../utils/i18n/i18n';
 import getFilterControlType from './filterControls/filterControlTypeFactory';
 import {
   FILTER_TOOLTIP_CLEAR_ICON,
@@ -164,7 +163,7 @@ class Filter extends React.Component{
       if (!isEmpty(nonDynamicOptions)){
         configOptions = [];
         nonDynamicOptions.forEach((option)=>{
-          let element = {'code': option.code, 'decode': i18n(option.decode)};
+          let element = {'code': option.code, 'decode': option.decode};
           configOptions.push(element);
         });
       }
@@ -204,17 +203,22 @@ class Filter extends React.Component{
 
   createFilterHeader(){
     const {theme} = this.props;
-    let hideHeader = this.props.filterControlsConfig.hideHeader;
+    const {
+      hideHeader,
+      label,
+      showToolTip=SHOW_FILTER,
+      hideToolTip=HIDE_FILTER,
+      clearToolTip=FILTER_TOOLTIP_CLEAR_ICON
+    } = this.props.filterControlsConfig;
     if(hideHeader === true){
       return null;
     }
 
-    let label = i18n(this.props.filterControlsConfig.label);
     return(
       <div onClick={this.onFilterHeaderClick.bind(this)}className={theme.filterHeader}>
         <div className={theme.title} title={label}>{label}
           {!this.areControlsWithValues(this.getFilterControlsValues()) || this.props.isDisabled ? '' :
-            <div className={theme.iconClickArea} title = {i18n(FILTER_TOOLTIP_CLEAR_ICON)}
+            <div className={theme.iconClickArea} title = {clearToolTip}
                  onClick={this.onFilterIconClick.bind(this)}>
               <div className={theme.icon}></div>
             </div>
@@ -222,7 +226,7 @@ class Filter extends React.Component{
         </div>
         {this.props.isDisabled ? '' :
           <div className={theme.direction}
-               title={this.isOpen() ? i18n(HIDE_FILTER) : i18n(SHOW_FILTER)}></div>
+               title={this.isOpen() ? hideToolTip : showToolTip}></div>
         }
       </div>
     );

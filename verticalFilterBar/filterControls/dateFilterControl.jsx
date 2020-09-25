@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 
 import FilterControl from './filterControl';
 import 'react-datepicker/dist/react-datepicker.css';
-import i18n from '../../utils/i18n/i18n';
 
 import {
   DatesDropDownOptionsCustomRange,
@@ -128,6 +127,7 @@ class DateFilterControl extends FilterControl{
   getDateDropDown(){
     const {theme} = this.props;
     let multiSelect = (this.props.config.multiSelect === true);
+    const clearToolTip = this.props.config.clearToolTip;
     let dropdownValue = !isEmpty(this.state.currentCriterion) ? this.state.currentCriterion.values.code : null;
 
     return (
@@ -135,13 +135,15 @@ class DateFilterControl extends FilterControl{
         <Select
           className = {`${theme.dropdownSelect} ${theme.dateDropdown}`}
           multi={multiSelect}
-          placeholder = {i18n(this.props.config.watermark)}
+          placeholder = {this.props.config.watermark}
           value={dropdownValue}
           labelKey = 'decode'
           valueKey = 'code'
           options = {this.getSelectOptions()}
           onChange = {this.onSelect.bind(this)}
           optionGroups = {true}
+          clearAllText={clearToolTip}
+          clearValueText={clearToolTip}
         >
         </Select>
       </div> );
@@ -154,6 +156,12 @@ class DateFilterControl extends FilterControl{
 
     let currentValue = this.state.currentCriterion.values;
     const {theme} = this.props;
+    const {
+      datePickerLabelFrom=DatePickerLabelFrom,
+      datePickerLabelTo=DatePickerLabelTo,
+      datePickerPlaceholderAllDates=DatePickerPlaceholderAllDates,
+      locale
+    } = this.props.config;
 
     if (!isEmpty(currentValue)){
       if (currentValue.code === 'custom_range'){
@@ -169,25 +177,28 @@ class DateFilterControl extends FilterControl{
         return (
           <div>
             <div className={className}>
-              <div>{i18n(DatePickerLabelFrom)}</div>
+              <div>{datePickerLabelFrom}</div>
               <DatePicker
                 key='startDate'
                 filterDate={this.excludeStartDates.bind(this, endDate)}
                 dateFormat={dateFormat}
-                placeholderText={i18n(DatePickerPlaceholderAllDates)}
+                placeholderText={datePickerPlaceholderAllDates}
                 selected={startDate}
-                onChange={this.onDatePickerChange.bind(this, 'from')}/>
+                onChange={this.onDatePickerChange.bind(this, 'from')}
+                clearToo
+                locale={locale}/>
             </div>
             <div className={className}>
-              <div>{i18n(DatePickerLabelTo)}</div>
+              <div>{datePickerLabelTo}</div>
               <DatePicker
                 key='endDate'
                 filterDate={this.excludeEndDates.bind(this, startDate)}
                 dateFormat={dateFormat}
-                placeholderText={i18n(DatePickerPlaceholderAllDates)}
+                placeholderText={datePickerPlaceholderAllDates}
                 selected={endDate}
                 openToDate={startDate}
-                onChange={this.onDatePickerChange.bind(this, 'to')} />
+                onChange={this.onDatePickerChange.bind(this, 'to')}
+                locale={locale}/>
             </div>
           </div>
         );
@@ -327,28 +338,26 @@ class DateFilterControl extends FilterControl{
     return dates;
   }
 
-  get(data, dynamicOptions) {
-    return dynamicOptions;
-  }
-
   getSelectOptions (){
     let configOptions;
     if(!isEmpty(this.props.config.dynamicOptions)){
-      configOptions = this.get(this.props.data,this.props.config.dynamicOptions);
+      configOptions = this.props.config.dynamicOptions;
     } else{
-      configOptions = [{decode:i18n(DatesDropDownOptionsCustomRange), code:'custom_range'},
-        {decode: i18n(DatesDropDownOptionsLast), code:'Last',disabled:true},
-        {decode: i18n(DatesDropDownOptionsLast24Hours), code:'Last_24_hours'},
-        {decode: i18n(DatesDropDownOptionsLast2Days), code:'Last_2-days'},
-        {decode: i18n(DatesDropDownOptionsLast3Days), code:'Last_3_days'},
-        {decode: i18n(DatesDropDownOptionsLast4Days), code:'Last_4_days'},
-        {decode: i18n(DatesDropDownOptionsLast5Days), code:'Last_5_days'},
-        {decode: i18n(DatesDropDownOptionsNext), code:'Next',disabled:true},
-        {decode: i18n(DatesDropDownOptionsNext24Hours), code:'Next_24_hours'},
-        {decode: i18n(DatesDropDownOptionsNext2Days), code:'Next_2_days'},
-        {decode: i18n(DatesDropDownOptionsNext3Days), code:'Next_3_days'},
-        {decode: i18n(DatesDropDownOptionsNext4Days), code:'Next_4_days'},
-        {decode: i18n(DatesDropDownOptionsNext5Days), code:'Next_5_days'} ];
+      configOptions = [
+        {decode: DatesDropDownOptionsCustomRange, code:'custom_range'},
+        {decode: DatesDropDownOptionsLast, code:'Last',disabled:true},
+        {decode: DatesDropDownOptionsLast24Hours, code:'Last_24_hours'},
+        {decode: DatesDropDownOptionsLast2Days, code:'Last_2-days'},
+        {decode: DatesDropDownOptionsLast3Days, code:'Last_3_days'},
+        {decode: DatesDropDownOptionsLast4Days, code:'Last_4_days'},
+        {decode: DatesDropDownOptionsLast5Days, code:'Last_5_days'},
+        {decode: DatesDropDownOptionsNext, code:'Next',disabled:true},
+        {decode: DatesDropDownOptionsNext24Hours, code:'Next_24_hours'},
+        {decode: DatesDropDownOptionsNext2Days, code:'Next_2_days'},
+        {decode: DatesDropDownOptionsNext3Days, code:'Next_3_days'},
+        {decode: DatesDropDownOptionsNext4Days, code:'Next_4_days'},
+        {decode: DatesDropDownOptionsNext5Days, code:'Next_5_days'}
+      ];
     }
 
     return configOptions;

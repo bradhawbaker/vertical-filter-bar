@@ -4,7 +4,6 @@ import { composeThemeFromProps } from '@css-modules-theme/react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import {PropTypes} from 'prop-types';
-import i18n from '../utils/i18n/i18n';
 import FilterGroup from './FilterGroup.jsx';
 import vfbStyle from '../resources/_verticalFilterBar.scss';
 
@@ -100,8 +99,8 @@ class VerticalFilterBar extends React.Component{
     return (
       <div className={composedTheme.vfbFilters}>
         <div className={composedTheme.vfbHeader}>{this.props.filterTitle}
-          <div className={composedTheme.clearAll} title={i18n(FILTER_BAR_CLEAR_ALL_TOOL_TIP)}
-               onClick={this.onClearAll.bind(this)}>{i18n(FILTER_BAR_CLEAR_ALL)}</div>
+          <div className={composedTheme.clearAll} title={this.props.clearAllToolTip}
+               onClick={this.onClearAll.bind(this)}>{this.props.clearAllText}</div>
         </div>
         {this.loadFilterGroup(composedTheme)}
       </div>
@@ -112,6 +111,8 @@ export default VerticalFilterBar;
 VerticalFilterBar.propTypes = {
   filterValues: PropTypes.any,
   filterTitle: PropTypes.any,
+  clearAllToolTip: PropTypes.string,
+  clearAllText: PropTypes.string,
   filtersConfig: PropTypes.any,
   filtersOrder: PropTypes.any,
   data:  PropTypes.any,
@@ -126,6 +127,8 @@ VerticalFilterBar.propTypes = {
 
 VerticalFilterBar.defaultProps = {
   noFilterMessage: "No Filter Available",
+  clearAllToolTip: FILTER_BAR_CLEAR_ALL_TOOL_TIP,
+  clearAllText: FILTER_BAR_CLEAR_ALL,
   theme: {},
   themeProps: {
     prefix: "vfb-",

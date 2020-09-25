@@ -1,6 +1,6 @@
 {
   "name": "vertical-filter-bar",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "filter bar component to consolidate and display a collection of filters which collectively can be used to specify parameter boundaries for a given data set rendered on screen",
   "main": "/dist/vertical-filter-bar.bundle.js",
   "author": "",
@@ -49,6 +49,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
