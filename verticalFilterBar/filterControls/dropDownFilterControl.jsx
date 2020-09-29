@@ -25,16 +25,42 @@ class DropDownFilterControl extends FilterControl{
   componentDidUpdate() {
     let {currentCriterion} = this.props;
 
-    if (currentCriterion && currentCriterion &&
-      (!this.state.currentCriterion ||
-      (currentCriterion.values.code && (!this.state.currentCriterion.values ||
-      !isEqual(this.state.currentCriterion.values.code, currentCriterion.values.code)) ||
-      !isEqual(currentCriterion.values, this.state.currentCriterion.values)))) {
-      this.handleChange(currentCriterion.values);
+    if (currentCriterion && currentCriterion.values) {
+      // we have a value to set
+      if (Object.keys(currentCriterion.values).length > 0) {
+        // a value is set, check if it is different from what was previously set
+        if (!this.state.currentCriterion || !this.state.currentCriterion.values) {
+          // there was no value previously
+          this.updateFilterValuesFromParent(currentCriterion.values);
+        } else if (currentCriterion.values.code && this.state.currentCriterion.values.code && 
+          !isEqual(this.state.currentCriterion.values.code, currentCriterion.values.code)) {
+            // the code values are different
+            this.updateFilterValuesFromParent(currentCriterion.values);
+        } else if (this.state.currentCriterion.values && !isEqual(currentCriterion.values, this.state.currentCriterion.values)) {
+          // the values are different
+          this.updateFilterValuesFromParent(currentCriterion.values);
+        }
+      } else {
+        // no value set, check if there was one previously
+        if (this.state.currentCriterion.values) {
+          // there was reviously a value
+          this.updateFilterValuesFromParent(currentCriterion.values);
+        } else if (this.state.currentCriterion.values && this.state.currentCriterion.values.code) {
+          this.updateFilterValuesFromParent(currentCriterion.values);
+        }
+      }
+    } else {
+      // there is no value to set, see if there was previously
+      if (this.state.currentCriterion.values) {
+        // there was reviously a value
+        this.updateFilterValuesFromParent({});
+      } else if (this.state.currentCriterion.values && this.state.currentCriterion.values.code) {
+        this.updateFilterValuesFromParent({});
+      }
     }
   }
 
-  handleChange(value){
+  updateFilterValuesFromParent(value) {
     let selectedValues = {};
 
     if (!isEmpty(value)){
@@ -42,6 +68,15 @@ class DropDownFilterControl extends FilterControl{
     }
 
     this.setState({currentCriterion: selectedValues});
+  }
+
+  handleSelectionChange(value){
+    let selectedValues = {};
+
+    if (!isEmpty(value)){
+      selectedValues.values = value;
+    }
+
     this.props.onFilterControlChange(selectedValues, this.props.controlId);
   }
 
@@ -98,7 +133,7 @@ class DropDownFilterControl extends FilterControl{
           valueKey = 'code'
           searchable = {searchable}
           options = {this.getSelectOptions()}
-          onChange = {this.handleChange.bind(this)}
+          onChange = {this.handleSelectionChange.bind(this)}
           clearAllText={clearToolTip}
           clearValueText={clearToolTip}
         >

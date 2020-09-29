@@ -134,6 +134,7 @@ class Filter extends React.Component{
           let emptyControler = {};
           emptyControler['values'] = emptyValues;
           clearedFilterControlsValues[controlId] = emptyControler;
+          this.onFilterControlChange({}, controlId);
         }
       }
     }

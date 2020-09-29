@@ -51,6 +51,7 @@ class VerticalFilterBar extends React.Component{
       let controls = {};
       controls.controls = controllers;
       clearedFilterValues[filterValue] = controls;
+      this.onFilterChange({}, filterControlId);
     }
     this.setState(() => {
       return {filterValues: clearedFilterValues};

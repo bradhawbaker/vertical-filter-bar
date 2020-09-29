@@ -22,37 +22,47 @@ export default class TextBoxControl extends Component {
 
   componentDidUpdate() {
     let {currentCriterion} = this.props;
-    if (currentCriterion && currentCriterion.values &&
+    if (currentCriterion && currentCriterion.values && 
+      // Object.keys(currentCriterion.values).length === 0 &&
       (!isEqual(this.state.currentCriterion, currentCriterion))) {
+        // only triggering when currentCriterion.values is empty ... this signifies 
+        // the value was cleared from externally (i.e. clear icon)
         this.handleTextChange(currentCriterion);
+    } else if ((!currentCriterion || !currentCriterion.values) && this.state.currentCriterion.values) {
+      // need to clear any previously set values
+      this.handleTextChange({});
     }
   }
 
   handleTextChange(currentCriterion) {
     const value = currentCriterion.values;
-    const {controlId} = this.props;
+    // const {controlId} = this.props;
     if (!isEmpty(value)) {
       this.setState({
           filterText: value,
           currentCriterion: currentCriterion
         }
       );
-      this.props.onFilterControlChange({values: value}, controlId);
+      // this.props.onFilterControlChange({values: value}, controlId);
     } else {
       this.setState({
         filterText: "",
         currentCriterion: currentCriterion
       });
-      this.props.onFilterControlChange({}, controlId);
+      // this.props.onFilterControlChange({}, controlId);
     }
   }
 
+  // child component had a change, just update the filterText
+  // (wait for hitting the 'return/enter' key to notify parent component)
   handleChange(e) {
     this.setState({
       filterText: e.target.value
     });
   }
 
+  // this component is initiating the changing of the filter value,
+  // notify parent component (i.e. onFitlerControlChange callback)
   handleFilterClick() {
     let toFilter = {};
     if(!isEmpty(this.state.filterText)) {
