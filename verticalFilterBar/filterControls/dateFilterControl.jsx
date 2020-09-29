@@ -50,15 +50,46 @@ class DateFilterControl extends FilterControl{
       !isEqual(this.state.currentCriterion.values.code, currentCriterion.values.code)) ||
       (!isEmpty(this.state.currentCriterion.values) && isEmpty(currentCriterion.values)) ||
       (!isEmpty(currentCriterion.values) && isEmpty(this.state.currentCriterion.values))))) {
-      this.onSelect(currentCriterion.values);
+      this.updateFilterValuesFromParent(currentCriterion.values);
     } else if (currentCriterion && currentCriterion.values &&
       currentCriterion.values.code === 'custom_range' &&
       ((currentCriterion.values.to && (!this.state.currentCriterion.values ||
       !isEqual(this.state.currentCriterion.values.to, currentCriterion.values.to))) ||
       (currentCriterion.values.from && (!this.state.currentCriterion.values ||
       !isEqual(this.state.currentCriterion.values.from, currentCriterion.values.from))))) {
-      this.onSelect(currentCriterion.values);
+      this.updateFilterValuesFromParent(currentCriterion.values);
+    } else if (!currentCriterion || !currentCriterion.values) {
+      if (this.state.currentCriterion.values) {
+        // there was reviously a value
+        this.updateFilterValuesFromParent({});
+      }
     }
+  }
+
+  updateFilterValuesFromParent(selected){
+    let selectedValues = {};
+    if (!isEmpty(selected)){
+      let description = selected.code;
+
+      if (description === 'custom_range'){
+        selectedValues.values = {
+          'from': (selected.from || null),
+          'to': (selected.to || null),
+          'code': description
+        };
+      }
+      else{
+        let selectedDates = this.getDatesFromDescription(description);
+        selectedValues.values = {
+          'from': selectedDates.from,
+          'to': selectedDates.to,
+          'code': description
+        };
+      }
+    }
+
+    this.setState({currentCriterion: selectedValues});
+    // this.props.onFilterControlChange(selectedValues, this.props.controlId);
   }
 
   onSelect(selected){
@@ -83,7 +114,7 @@ class DateFilterControl extends FilterControl{
       }
     }
 
-    this.setState({currentCriterion: selectedValues});
+    // this.setState({currentCriterion: selectedValues});
     this.props.onFilterControlChange(selectedValues, this.props.controlId);
   }
 
