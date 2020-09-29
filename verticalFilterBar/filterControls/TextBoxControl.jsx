@@ -36,7 +36,6 @@ export default class TextBoxControl extends Component {
 
   handleTextChange(currentCriterion) {
     const value = currentCriterion.values;
-    // const {controlId} = this.props;
     if (!isEmpty(value)) {
       this.setState({
           filterText: value,
