@@ -10,6 +10,7 @@ import vfbStyle from '../resources/_verticalFilterBar.scss';
 import buildThemingProps from '../utils/ThemeUtils';
 
 import {
+  FILTER_BAR_NO_FILTER_MESSAGE,
   FILTER_BAR_CLEAR_ALL,
   FILTER_BAR_CLEAR_ALL_TOOL_TIP
 } from './VerticalFilterBarConstants';
@@ -126,7 +127,7 @@ VerticalFilterBar.propTypes = {
 }
 
 VerticalFilterBar.defaultProps = {
-  noFilterMessage: "No Filter Available",
+  noFilterMessage: FILTER_BAR_NO_FILTER_MESSAGE,
   clearAllToolTip: FILTER_BAR_CLEAR_ALL_TOOL_TIP,
   clearAllText: FILTER_BAR_CLEAR_ALL,
   theme: {},
