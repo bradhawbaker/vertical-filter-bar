@@ -1,6 +1,7 @@
 export const FILTER_BAR_CLEAR_ALL = "Clear All";
 export const FILTER_BAR_CLEAR_ALL_TOOL_TIP =
   'The "Clear All" button shall reset all filters back to their default value';
+export const FILTER_BAR_NO_FILTER_MESSAGE = "No Filter Available";
 
 export const FILTER_TOOLTIP_CLEAR_ICON = "Clear";
 export const SHOW_FILTER = "Show Filter";

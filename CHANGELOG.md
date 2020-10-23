@@ -1,3 +1,7 @@
+## 4.0.4 (October 23, 2020)
+
+- move `noFilterMessage` literal into constants file
+
 ## 4.0.3 (September 29, 2020)
 
 - cleaning up notification to parent component (was double triggering VerticalFilterBar.onFilterChange whenever there was a value change)

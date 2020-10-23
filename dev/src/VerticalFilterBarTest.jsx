@@ -206,6 +206,7 @@ export default class VerticalFilterBarTest extends Component {
             clearAllText={CLEAR_ALL_TEXT}
             theme={theme}
             themeProps={themeProps}
+            noFilterMessage="Filter Not Available"
           />
         </div>
         <div className={styles.filterResultsDiv}>
